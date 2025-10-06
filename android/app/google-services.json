@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "677834212397",
+    "project_id": "dna-taskflow-prime",
+    "storage_bucket": "dna-taskflow-prime.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677834212397:android:185a40e00181430b1ae4a4",
+        "android_client_info": {
+          "package_name": "com.example.dna_taskflow_prime"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmCMsAkJSfyQkMgZWtECW6DcDFFD2iCWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
