@@ -5,12 +5,14 @@ class ActionButton extends StatelessWidget {
   final String title;
   final IconData icon;
   final bool isPrimary;
+  final VoidCallback? onTap;
 
   const ActionButton({
     super.key,
     required this.title,
     required this.icon,
     this.isPrimary = false,
+    this.onTap,
   });
 
   @override
@@ -28,9 +30,7 @@ class ActionButton extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {
-              // Action logic goes here
-            },
+            onTap: onTap,
             borderRadius: BorderRadius.circular(8),
             child: Padding(
               padding: const EdgeInsets.all(16.0),

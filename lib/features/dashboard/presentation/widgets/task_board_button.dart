@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class TaskBoardButton extends StatelessWidget {
@@ -10,6 +8,7 @@ class TaskBoardButton extends StatelessWidget {
   final double fontSize;
 
   const TaskBoardButton({
+    super.key,
     required this.title,
     required this.icon,
     required this.fontSize,

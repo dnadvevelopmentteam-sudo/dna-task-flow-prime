@@ -1,113 +1,17 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
-import 'package:dna_taskflow_prime/features/dashboard/domain/entities/kanbancolumn_entity.dart';
-import 'package:dna_taskflow_prime/features/dashboard/domain/entities/task_entity.dart';
+import 'package:dna_taskflow_prime/features/Tasks/presentation/pages/tasks_page.dart';
+import 'package:dna_taskflow_prime/features/clients/presentation/pages/clients_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/bottom_section_row.dart';
+import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/create_announcment_dialogbox.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/place_holder_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/recent_task_cards.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/side_bar.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/task_kanban_screen.dart';
 import 'package:flutter/material.dart';
-
-List<KanbanColumnEntity> initialKanbanData = [
-  KanbanColumnEntity(
-    title: 'To Do',
-    status: 'todo',
-    tasks: [
-      TaskEntity(
-        id: 'task-1',
-        title: 'Urgent Tax Notice Response',
-        company: 'Tech Innovations Pvt Ltd',
-        priority: 'High',
-        priorityColor: Colors.red.shade700,
-        overdue: 'Overdue 46d 22h',
-        loggedTime: '6h',
-        assignees: 2,
-        statusLabel: 'ToDo',
-      ),
-      TaskEntity(
-        id: 'task-2',
-        title: 'GSTR-3B Preparation',
-        company: 'Green Energy Solutions',
-        priority: 'High',
-        priorityColor: Colors.red.shade700,
-        overdue: 'Overdue 43d 22h',
-        loggedTime: '2h',
-        assignees: 2,
-        statusLabel: 'ToDo',
-      ),
-    ],
-    color: Colors.red.shade100,
-  ),
-  KanbanColumnEntity(
-    title: 'In Progress',
-    status: 'in_progress',
-    tasks: [
-      TaskEntity(
-        id: 'task-3',
-        title: 'ESI Return Filing',
-        company: 'Mumbai Retail Chain',
-        priority: 'High',
-        priorityColor: Colors.red.shade700,
-        overdue: 'Overdue 44d 22h',
-        loggedTime: '3h',
-        assignees: 1,
-        statusLabel: 'Doing',
-      ),
-      TaskEntity(
-        id: 'task-4',
-        title: 'Audit Trail Documentation',
-        company: 'Healthcare Associates',
-        priority: 'Medium',
-        priorityColor: Colors.amber.shade700,
-        overdue: 'Overdue 42d 22h',
-        loggedTime: '3h',
-        assignees: 1,
-        statusLabel: 'Doing',
-      ),
-    ],
-    color: Colors.yellow.shade100,
-  ),
-  KanbanColumnEntity(
-    title: 'Done',
-    status: 'done',
-    tasks: [
-      TaskEntity(
-        id: 'task-5',
-        title: 'Client Onboarding - New Entity',
-        company: 'Export Trading Co',
-        priority: 'High',
-        priorityColor: Colors.red.shade700,
-        overdue: 'Overdue 34d 22h',
-        loggedTime: '20h',
-        assignees: 0,
-        statusLabel: 'Done',
-      ),
-    ],
-    color: Colors.green.shade100,
-  ),
-  KanbanColumnEntity(
-    title: 'Review (TM)',
-    status: 'review_tm',
-    tasks: [
-      TaskEntity(
-        id: 'task-6',
-        title: 'Payroll Reconciliation',
-        company: 'Mumbai Retail Chain',
-        priority: 'High',
-        priorityColor: Colors.red.shade700,
-        overdue: 'Overdue 39d 22h',
-        loggedTime: '12h',
-        assignees: 0,
-        statusLabel: 'Review TM',
-      ),
-    ],
-    color: Colors.blue.shade100,
-  ),
-];
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
@@ -116,8 +20,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     MainDashboardContent(),
-    TaskKanbanScreen(),
-    PlaceholderPage(title: 'Clients'),
+    TasksPage(),
+    ClientsPage(),
     PlaceholderPage(title: 'Timesheet'),
     PlaceholderPage(title: 'Timesheet-Team'),
     PlaceholderPage(title: 'Recurring Tasks'),
@@ -211,7 +115,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 radius: 12,
                 child: Text(
                   'd',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: context.scaleFont(16),
+                  ),
                 ),
               ),
               SizedBox(width: 10),
@@ -243,7 +150,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Spacer(),
           Container(
-            // Reduce search bar width/padding on smaller screens
             width: isDesktop ? 400 : 200,
             height: 40,
             decoration: BoxDecoration(
@@ -269,14 +175,76 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       actions: <Widget>[
         IconButton(
-          icon: const Icon(Icons.notifications_none, color: Colors.grey),
+          icon: SizedBox(
+            width: 36,
+            height: 36,
+            child: const ImageIcon(
+              AssetImage('assets/icons/Bell.png'),
+              // color: Colors.grey,
+            ),
+          ),
           onPressed: () {},
         ),
-        // Hide person icon on small mobile screens
         if (isDesktop || context.screenWidth > 500) ...[
-          IconButton(
-            icon: const Icon(Icons.person_outline, color: Colors.grey),
-            onPressed: () {},
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    backgroundColor: Color(0xFFDBEAFE),
+                    // radius:
+                    // 20,
+                    child: Text(
+                      'DU',
+                      style: TextStyle(
+                        fontFamily: "Inter",
+                        color: Color(0xFF0851B8),
+                        fontSize: context.scaleFont(16),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 8),
+
+                Text(
+                  'Demo User',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF101828),
+                    fontSize: context.scaleFont(16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(right: 9.0, left: 9.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                color: Color(0xFFFB2C36),
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: Text(
+                'Admin',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  color: Color(0xFFFFFFFF),
+                  fontSize: context.scaleFont(12),
+
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ),
         ],
       ],
@@ -287,6 +255,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 // --- DASHBOARD CONTENT (Index 0) (Unchanged) ---
 class MainDashboardContent extends StatelessWidget {
   MainDashboardContent({super.key});
+  void _showCreateAnnouncement(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const CreateAnnouncementDialog();
+      },
+    );
+  }
+
   List<Map<String, dynamic>> recents = [
     {
       'title': 'GSTR-1 Filing for Acme Corp',
@@ -352,7 +329,9 @@ class MainDashboardContent extends StatelessWidget {
           Align(
             alignment: Alignment.bottomRight,
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                _showCreateAnnouncement(context);
+              },
               label: const Text('Create Announcement'),
               icon: const Icon(Icons.add, size: 20),
               style: ElevatedButton.styleFrom(

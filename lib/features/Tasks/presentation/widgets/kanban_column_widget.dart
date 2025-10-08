@@ -1,7 +1,8 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
+import 'package:dna_taskflow_prime/features/Tasks/presentation/widgets/create_new_task_dialoug.dart';
+import 'package:dna_taskflow_prime/features/Tasks/presentation/widgets/task_card.dart';
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/kanbancolumn_entity.dart';
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/task_entity.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 
 class KanbanColumnWidget extends StatefulWidget {
@@ -129,7 +130,14 @@ class _KanbanColumnWidgetState extends State<KanbanColumnWidget> {
                   // Add Task Button
                   Center(
                     child: TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext dialogContext) {
+                            return const CreateNewTaskDialog();
+                          },
+                        );
+                      },
                       icon: Icon(
                         Icons.add_circle_outline,
                         size: context.scaleFont(20),

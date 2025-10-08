@@ -1,7 +1,7 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
+import 'package:dna_taskflow_prime/features/Tasks/presentation/widgets/kanban_column_widget.dart';
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/kanbancolumn_entity.dart';
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/task_entity.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/kanban_column_widget.dart';
 import 'package:flutter/material.dart';
 
 class KanbanBoardLayout extends StatelessWidget {

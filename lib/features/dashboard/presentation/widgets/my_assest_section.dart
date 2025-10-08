@@ -16,25 +16,27 @@ class MyAssetsSection extends StatelessWidget {
           fontSize: context.scaleFont(14),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 20),
-          Icon(
-            Icons.monitor,
-            size: context.scaleFont(60),
-            color: Colors.grey.shade300,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'No assets assigned to you yet',
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: context.scaleFont(14),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            Icon(
+              Icons.monitor,
+              size: context.scaleFont(60),
+              color: Colors.grey.shade300,
             ),
-          ),
-          const SizedBox(height: 20),
-        ],
+            const SizedBox(height: 10),
+            Text(
+              'No assets assigned to you yet',
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: context.scaleFont(14),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

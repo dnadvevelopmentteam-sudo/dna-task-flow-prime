@@ -1,7 +1,5 @@
+import 'package:dna_taskflow_prime/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
-
-import 'features/dashboard/presentation/pages/dashboard_page.dart'
-    show DashboardScreen;
 
 void main() {
   runApp(const MyApp());
@@ -18,8 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Inter', useMaterial3: true),
       home: const DashboardScreen(),
       // home: const SignInScreen(),
-      // home: const TaskScreen(),
-      // home: const ClientsScreen(),
+      // home: const TaskKanbanScreen(),
+      // home: const ClientsScreenContent(),
       // home:  TimesheetScreen(),
       // home: TeamTimesheetScreen(),
       // home: EscalationsScreen(),

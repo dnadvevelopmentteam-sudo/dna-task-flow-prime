@@ -48,6 +48,24 @@ class StatsRow extends StatelessWidget {
     );
   }
 
+  void _showOverdueTasks(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const OverdueTasksDialog();
+      },
+    );
+  }
+
+  void _showPointsBreakdown(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const PointsBreakdownDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = context.isMobile;
@@ -76,14 +94,18 @@ class StatsRow extends StatelessWidget {
         value: '3',
         subtitle: 'Need attention',
         path: 'assets/icons/overdue.png',
-        onTap: () {},
+        onTap: () {
+          _showOverdueTasks(context);
+        },
       ),
       StatCard(
         title: 'Points',
         value: '156',
         subtitle: 'Monthly rank #4',
         path: 'assets/icons/points.png',
-        onTap: () {},
+        onTap: () {
+          _showPointsBreakdown(context);
+        },
       ),
     ];
 
@@ -161,14 +183,17 @@ class ActiveTasksDialog extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
+      color: Color(0xFFFFFFFF),
+      // width: 781,
+      // height: 565,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        // Line under the header
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade100, width: 1),
-        ),
-      ),
+      // decoration: BoxDecoration(
+      // color: Theme.of(context).cardColor,
+      // Line under the header
+      //   border: Border(
+      //     bottom: BorderSide(color: Colors.grey.shade100, width: 1),
+      //   ),
+      // ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -1042,3 +1067,694 @@ class _TimeEntryItem extends StatelessWidget {
     );
   }
 }
+
+// ....................................Hours Logged  Dialouge box ends. .............................
+
+// --- OVERDUE TASK DIALOG WIDGET STARTS ---
+class OverdueTasksDialog extends StatelessWidget {
+  const OverdueTasksDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Using AlertDialog for a modal-like popup,
+    // setting contentPadding to zero to control the layout fully.
+    return AlertDialog(
+      titlePadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+
+      // Use a custom widget for the content so we can have
+      // the title, content, and close button all together.
+      content: const OverdueTasksDetailsContent(),
+    );
+  }
+}
+
+// --- Content Widget to build the complex UI structure ---
+class OverdueTasksDetailsContent extends StatelessWidget {
+  const OverdueTasksDetailsContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 500, // Approximate width for desktop-like dialog
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Header with Title and Close Button
+          _buildHeader(context),
+          const Divider(height: 1),
+
+          // 2. Summary Cards Section
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSummaryCards(),
+                const SizedBox(height: 16),
+
+                // 3. Immediate Action Required Alert
+                _buildActionRequiredAlert(),
+                const SizedBox(height: 16),
+
+                // 4. Overdue Tasks Details Header
+                _buildListHeader(),
+                const SizedBox(height: 8),
+
+                // 5. Task List Item (Example)
+                _buildTaskListItem(
+                  title: 'Urgent Tax Notice Response',
+                  overdueDays: 2,
+                  assignee: 'Priya Sharma',
+                  dueDate: '08/30/2024',
+                  reason:
+                      'Amazing client documentation. Impact: High - Penalty risk',
+                  progress: 0.0, // 0%
+                ),
+                // (In a real app, you would use a ListView.builder here)
+              ],
+            ),
+          ),
+
+          // 6. Footer/Action Button
+          _buildFooter(context),
+        ],
+      ),
+    );
+  }
+
+  // --- Widget Builders ---
+
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.warning_amber, color: Colors.red),
+              const SizedBox(width: 8),
+              Text(
+                'Overdue Tasks Details',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryCards() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _SummaryCard(title: 'Total Overdue', value: 3),
+        SizedBox(width: 10),
+        _SummaryCard(title: 'High Priority', value: 2),
+        SizedBox(width: 10),
+        _SummaryCard(title: 'Avg Days Late', value: 2),
+        SizedBox(width: 10),
+        _SummaryCard(title: 'Total Days Late', value: 6),
+      ],
+    );
+  }
+
+  Widget _buildActionRequiredAlert() {
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: Colors.red.withOpacity(0.05), // Light red background
+        borderRadius: BorderRadius.circular(4.0),
+        border: const Border(left: BorderSide(color: Colors.red, width: 4)),
+      ),
+      child: const Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.warning, color: Colors.red, size: 20),
+          SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Immediate Action Required',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'You have 2 high-priority overdue tasks that may impact client relationships and compliance. Please prioritize those tasks immediately.',
+                  style: TextStyle(fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'Overdue Tasks Details',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        TextButton(onPressed: () {}, child: const Text('View All Tasks')),
+      ],
+    );
+  }
+
+  Widget _buildTaskListItem({
+    required String title,
+    required int overdueDays,
+    required String assignee,
+    required String dueDate,
+    required String reason,
+    required double progress,
+  }) {
+    // The grey box around the item is typically achieved with a Card or Container
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(4.0),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title and Overdue Tag
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade100,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  '$overdueDays days overdue',
+                  style: TextStyle(color: Colors.red.shade700, fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+
+          // Assignee, Due Date, and Priority Tags
+          Row(
+            children: [
+              Text(
+                assignee,
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+              ),
+              const SizedBox(width: 4),
+              const Icon(Icons.circle, size: 4, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(
+                'Due: $dueDate',
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+              ),
+              const Spacer(),
+              _TaskTag(label: 'High', color: Colors.red),
+              const SizedBox(width: 4),
+              _TaskTag(label: 'ToDo', color: Colors.blue), // Example tag
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // Reason/Impact
+          Text('Reason: $reason', style: const TextStyle(fontSize: 13)),
+          const SizedBox(height: 8),
+
+          // Progress Bar
+          Row(
+            children: [
+              Expanded(
+                child: LinearProgressIndicator(
+                  value: progress, // 0.0 for 0%
+                  minHeight: 8,
+                  backgroundColor: Colors.grey.shade200,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    Colors.green,
+                  ), // Assuming progress is green
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '${(progress * 100).toInt()}%',
+                style: const TextStyle(fontSize: 13),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      ),
+      child: ElevatedButton(
+        onPressed: () => Navigator.of(context).pop(),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+        ),
+        child: const Text('Close'),
+      ),
+    );
+  }
+}
+
+// --- Helper Widgets ---
+
+// Card for the summary statistics (e.g., Total Overdue)
+class _SummaryCard extends StatelessWidget {
+  final String title;
+  final int value;
+
+  const _SummaryCard({required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          side: BorderSide(color: Colors.grey.shade200),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Column(
+            children: [
+              Text(
+                '$value',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red.shade700, // Color of the numbers
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Tag for task priority/status (e.g., High, ToDo)
+class _TaskTag extends StatelessWidget {
+  final String label;
+  final Color color;
+
+  const _TaskTag({required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withOpacity(0.5)),
+      ),
+      child: Text(
+        label.toUpperCase(),
+        style: TextStyle(
+          // color: color.shade700,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+}
+
+// --- OVERDUE TASK DIALOG WIDGET ENDS ---
+
+// --- POINTS BREAKDOWN DIALOG WIDGET STARTS ---
+
+class PointsBreakdownDialog extends StatelessWidget {
+  const PointsBreakdownDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Using AlertDialog for a modal-like popup.
+    return AlertDialog(
+      titlePadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+
+      // Use a custom widget for the content to control the layout fully.
+      content: const PointsBreakdownContent(),
+    );
+  }
+}
+
+// --- Content Widget to build the complex UI structure ---
+class PointsBreakdownContent extends StatelessWidget {
+  const PointsBreakdownContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 500, // Approximate width for desktop-like dialog
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Header with Title and Close Button
+          _buildHeader(context),
+          const Divider(height: 1),
+
+          // 2. Main Content Area with Padding
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 3. Summary Cards Section
+                _buildSummaryCards(),
+                const SizedBox(height: 16),
+
+                // 4. Point Allocation Rules Card
+                _buildAllocationRulesCard(context),
+                const SizedBox(height: 16),
+
+                // 5. Recent Activity Card
+                _buildRecentActivityCard(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- Widget Builders ---
+
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Points Breakdown',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryCards() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _SummaryCards(
+          title: 'Total Points',
+          value: 0,
+          icon: Icons.star_border,
+          valueColor: Colors.blue,
+        ),
+        SizedBox(width: 10),
+        _SummaryCards(
+          title: 'Total Points',
+          value: 0,
+          icon: Icons.star_border,
+          valueColor: Colors.blue,
+        ),
+        SizedBox(width: 10),
+        _SummaryCards(
+          title: 'Awards',
+          value: 0,
+          prefix: '+',
+          icon: Icons.emoji_events_outlined,
+          valueColor: Colors.green,
+        ),
+        SizedBox(width: 10),
+        _SummaryCards(
+          title: 'Penalties',
+          value: 0,
+          prefix: '+',
+          icon: Icons.gpp_bad_outlined,
+          valueColor: Colors.red,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAllocationRulesCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Point Allocation Rules',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          const Divider(height: 20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Earning Points Column
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Earning Points:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildRuleItem(
+                      icon: Icons.task_alt,
+                      text: 'Task completed before due date: +10 points',
+                      color: Colors.green,
+                    ),
+                  ],
+                ),
+              ),
+              const VerticalDivider(width: 32),
+
+              // Earning Points (Deductions) Column
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Earning Points:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildRuleItem(
+                      icon: Icons.error_outline,
+                      text: 'Task not completed by due date: -10 points',
+                      color: Colors.red,
+                    ),
+                    _buildRuleItem(
+                      icon: Icons.warning_amber,
+                      text: 'Quality not satisfactory: -5 points',
+                      color: Colors.red,
+                    ),
+                    _buildRuleItem(
+                      icon: Icons.cancel_outlined,
+                      text: 'Award reversed due to review bounce: -10 points',
+                      color: Colors.red,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRuleItem({
+    required IconData icon,
+    required String text,
+    required Color color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 18, color: color),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 13))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecentActivityCard() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.receipt_long, color: Colors.black54),
+              const SizedBox(width: 8),
+              Text(
+                'Recent Activity',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          const Divider(height: 20),
+
+          // Placeholder for "No points activity yet"
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            child: Center(
+              child: Column(
+                children: [
+                  const Icon(
+                    Icons.emoji_events_outlined,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'No points activity yet',
+                    style: TextStyle(color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// --- Helper Widget for the Summary Cards ---
+class _SummaryCards extends StatelessWidget {
+  final String title;
+  final int value;
+  final String? prefix;
+  final IconData icon;
+  final Color valueColor;
+
+  const _SummaryCards({
+    required this.title,
+    required this.value,
+    this.prefix,
+    required this.icon,
+    required this.valueColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+          side: BorderSide(color: Colors.grey.shade200),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(icon, size: 24, color: valueColor),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${prefix ?? ''}$value',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: valueColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// --- POINTS BREAKDOWN DIALOG WIDGET ENDS ---
