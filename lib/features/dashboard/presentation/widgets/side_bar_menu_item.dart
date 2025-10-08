@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class SidebarMenuItem extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final Widget icon;
+
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -18,6 +19,10 @@ class SidebarMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color iconTextColor = isSelected
+        ? Colors.white
+        : Colors.grey.shade800;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       decoration: BoxDecoration(
@@ -33,16 +38,15 @@ class SidebarMenuItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  color: isSelected ? Colors.white : Colors.grey.shade600,
-                  size: 20,
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(iconTextColor, BlendMode.srcIn),
+                  child: icon,
                 ),
                 const SizedBox(width: 12),
                 Text(
                   title,
                   style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.grey.shade800,
+                    color: iconTextColor,
                     fontWeight: isSelected
                         ? FontWeight.w600
                         : FontWeight.normal,

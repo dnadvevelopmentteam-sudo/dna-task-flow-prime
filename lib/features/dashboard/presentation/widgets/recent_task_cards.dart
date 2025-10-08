@@ -35,7 +35,6 @@ class RecentTaskCard extends StatelessWidget {
     switch (priority) {
       case 'High':
       case 'Medium':
-        // A very light pink/red color to match the screenshot's overall tint
         return const Color(0xFFFEF5F5);
       default:
         return Colors.white;
@@ -53,7 +52,7 @@ class RecentTaskCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: cardBackgroundColor, // Light pink background
+        color: cardBackgroundColor,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
@@ -93,7 +92,6 @@ class RecentTaskCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Priority Chip (Top Right)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -112,11 +110,9 @@ class RecentTaskCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          // 2. Overdue Status Chip and Hours Logged (Middle Row)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Overdue Status Chip (Styled to match screenshot's prominent look)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -140,8 +136,6 @@ class RecentTaskCard extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // Hours Logged (Moved here to the right)
               Row(
                 children: [
                   Icon(
@@ -163,14 +157,11 @@ class RecentTaskCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          // 3. Assignee, Status Chip, and Comments (Bottom Row)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Assignee and Status Chip Group
               Row(
                 children: [
-                  // Assignee
                   Row(
                     children: [
                       Icon(
@@ -211,8 +202,6 @@ class RecentTaskCard extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // Comments (Aligned to the right)
               Row(
                 children: [
                   Icon(

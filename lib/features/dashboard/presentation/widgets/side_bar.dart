@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SidebarItem {
   final String title;
-  final IconData icon;
+  final Widget icon;
   const SidebarItem(this.title, this.icon);
 }
 
@@ -12,25 +12,36 @@ class Sidebar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTap;
 
-  const Sidebar({
-    super.key,
-    required this.selectedIndex,
-    required this.onItemTap,
-  });
+  Sidebar({super.key, required this.selectedIndex, required this.onItemTap});
 
-  final List<SidebarItem> menuItems = const [
-    SidebarItem('Dashboard', Icons.dashboard),
-    SidebarItem('Tasks', Icons.task),
-    SidebarItem('Clients', Icons.people_alt),
-    SidebarItem('Timesheet', Icons.schedule),
-    SidebarItem('Timesheet-Team', Icons.group),
-    SidebarItem('Recurring Tasks', Icons.repeat),
-    SidebarItem('Escalations', Icons.arrow_upward),
-    SidebarItem('Masters', Icons.storage),
-    SidebarItem('Team', Icons.diversity_3),
-    SidebarItem('Reports', Icons.assessment),
-    SidebarItem('Leaderboards', Icons.leaderboard),
-    SidebarItem('Notices', Icons.campaign),
+  final List<SidebarItem> menuItems = [
+    SidebarItem(
+      'Dashboard',
+      Image.asset('assets/icons/dashboard_icon.png', width: 24, height: 24),
+    ),
+    SidebarItem('Tasks', Image.asset('assets/icons/tasks_icon.png')),
+    SidebarItem('Clients', Image.asset('assets/icons/clients_icon.png')),
+    SidebarItem('Timesheet', Image.asset('assets/icons/timesheet_icon.png')),
+    SidebarItem(
+      'Timesheet-Team',
+      Image.asset('assets/icons/timesheet_team_icon.png'),
+    ),
+    SidebarItem(
+      'Recurring Tasks',
+      Image.asset('assets/icons/recurring_tasks_icon.png'),
+    ),
+    SidebarItem(
+      'Escalations',
+      Image.asset('assets/icons/escalations_icon.png'),
+    ),
+    SidebarItem('Masters', Image.asset('assets/icons/masters_icon.png')),
+    SidebarItem('Team', Image.asset('assets/icons/team_icon.png')),
+    SidebarItem('Reports', Image.asset('assets/icons/reports_icon.png')),
+    SidebarItem(
+      'Leaderboards',
+      Image.asset('assets/icons/leaderboards_icon.png'),
+    ),
+    SidebarItem('Notices', Image.asset('assets/icons/notices_icon.png')),
   ];
 
   @override

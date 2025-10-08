@@ -1,3 +1,4 @@
+import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends StatelessWidget {
@@ -24,8 +25,7 @@ class CustomElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final Color defaultColor = Colors.blue.shade800;
+    final Color defaultColor = AppColors.primary;
 
     return SizedBox(
       width: double.infinity,

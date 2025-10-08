@@ -1,4 +1,5 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
+import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:dna_taskflow_prime/features/Tasks/presentation/pages/tasks_page.dart';
 import 'package:dna_taskflow_prime/features/clients/presentation/pages/clients_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/bottom_section_row.dart';
@@ -59,14 +60,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
       body: Row(
         children: <Widget>[
-          // Only show Sidebar inline on desktop
           if (isDesktop)
             Sidebar(
               selectedIndex: _selectedIndex,
               onItemTap: _onMenuItemSelected,
             ),
 
-          // Right Partition: Dynamic Content Area
           Expanded(
             child: Column(
               children: [
@@ -86,7 +85,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // A simplified App Bar for the top controls and search box
   PreferredSizeWidget _buildCustomAppBar(bool isDesktop, BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
@@ -95,8 +93,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       elevation: 10,
 
-      // toolbarHeight: 60,
-      // Add a leading menu icon on mobile to open the Drawer
       leading: !isDesktop
           ? Builder(
               builder: (context) => IconButton(
@@ -160,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               decoration: InputDecoration(
                 hintText: 'Search tasks, clients, or colleagues...',
                 hintStyle: TextStyle(
-                  fontSize: context.scaleFont(14), // Scaled font
+                  fontSize: context.scaleFont(14),
                   color: Colors.grey,
                 ),
                 prefixIcon: const Icon(Icons.search, color: Colors.grey),
@@ -203,7 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       'DU',
                       style: TextStyle(
                         fontFamily: "Inter",
-                        color: Color(0xFF0851B8),
+                        color: AppColors.primary,
                         fontSize: context.scaleFont(16),
                         fontWeight: FontWeight.w400,
                       ),
@@ -229,10 +225,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 9.0, left: 9.0),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               decoration: BoxDecoration(
-                color: Color(0xFFFB2C36),
-                borderRadius: BorderRadius.circular(4.0),
+                color: AppColors.error,
+
+                borderRadius: BorderRadius.circular(30.0),
               ),
               child: Text(
                 'Admin',
@@ -240,7 +237,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontFamily: 'Inter',
                   color: Color(0xFFFFFFFF),
                   fontSize: context.scaleFont(12),
-
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -326,36 +322,53 @@ class MainDashboardContent extends StatelessWidget {
           const StatsRow(),
           const SizedBox(height: 30),
           const BottomSectionsRow(),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                _showCreateAnnouncement(context);
-              },
-              label: const Text('Create Announcement'),
-              icon: const Icon(Icons.add, size: 20),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.shade600,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
 
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-
-                elevation: 0,
-              ),
-            ),
-          ),
+          // ),
           const SizedBox(height: 30),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: recents.length,
-            itemBuilder: (context, index) =>
-                RecentTaskCard(data: recents[index]),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 600,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: recents.length,
+                      itemBuilder: (context, index) =>
+                          RecentTaskCard(data: recents[index]),
+                    ),
+                  ),
+                ),
+              ),
+              Spacer(),
+              SizedBox(
+                // width: 198,
+                // height: 64,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    _showCreateAnnouncement(context);
+                  },
+                  label: const Text('Create Announcement'),
+                  icon: const Icon(Icons.add, size: 20),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+
+                    elevation: 0,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
+import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
@@ -21,7 +22,7 @@ class ActionButton extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Container(
         decoration: BoxDecoration(
-          color: isPrimary ? Colors.blue.shade700 : Colors.white,
+          color: isPrimary ? AppColors.primary : Colors.white,
           borderRadius: BorderRadius.circular(8),
           border: isPrimary
               ? null

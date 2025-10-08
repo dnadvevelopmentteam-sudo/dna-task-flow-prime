@@ -1,4 +1,5 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
+import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stat_card.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class StatsRow extends StatelessWidget {
 
     showDialog(
       context: context,
-      barrierDismissible: true, // Allows tapping outside to close
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return Center(
           child: ConstrainedBox(
@@ -208,7 +209,7 @@ class ActiveTasksDialog extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.grey),
-            // Close the dialog when tapped
+
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -294,7 +295,7 @@ class ActiveTasksDialog extends StatelessWidget {
         'progressText': 'Progress: 2.5h / 4h',
         'progressValue': 0.63,
       },
-      // Added a third task, which is slightly visible behind the close button in the original image.
+
       {
         'title': 'GSTR-1 Filing for Acme Corp',
         'client': 'Acme Corporation',
@@ -359,11 +360,11 @@ class ActiveTasksDialog extends StatelessWidget {
         border: Border(top: BorderSide(color: Colors.grey.shade100, width: 1)),
       ),
       child: SizedBox(
-        width: 120, // Fixed width for the button
+        width: 120,
         child: ElevatedButton(
           onPressed: () => Navigator.of(context).pop(),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1D4ED8), // Blue color
+            backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 15),
             shape: RoundedRectangleBorder(
@@ -373,9 +374,13 @@ class ActiveTasksDialog extends StatelessWidget {
             ),
             elevation: 2,
           ),
-          child: const Text(
+          child: Text(
             'Close',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: context.scaleFont(14),
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),
@@ -867,21 +872,29 @@ class HoursLoggedDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       alignment: Alignment.centerRight,
+
       child: SizedBox(
         width: 120,
         child: ElevatedButton(
           onPressed: () => Navigator.of(context).pop(),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1D4ED8),
+            backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 15),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(
+                8.0,
+              ), // Rounded corners for button
             ),
+            elevation: 2,
           ),
-          child: const Text(
+          child: Text(
             'Close',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: context.scaleFont(14),
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),
@@ -1338,17 +1351,31 @@ class OverdueTasksDetailsContent extends StatelessWidget {
         color: Colors.grey.shade50,
         border: Border(top: BorderSide(color: Colors.grey.shade200)),
       ),
-      child: ElevatedButton(
-        onPressed: () => Navigator.of(context).pop(),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
+
+      child: SizedBox(
+        width: 120,
+        child: ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                8.0,
+              ), // Rounded corners for button
+            ),
+            elevation: 2,
+          ),
+          child: Text(
+            'Close',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: context.scaleFont(14),
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-        child: const Text('Close'),
       ),
     );
   }

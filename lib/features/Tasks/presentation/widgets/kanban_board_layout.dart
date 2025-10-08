@@ -39,7 +39,7 @@ class KanbanBoardLayout extends StatelessWidget {
                 (col) => Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: SizedBox(
-                    width: 280, // Fixed width for each column
+                    width: 280,
                     child: KanbanColumnWidget(
                       column: col,
                       onTaskMove: onTaskMove,

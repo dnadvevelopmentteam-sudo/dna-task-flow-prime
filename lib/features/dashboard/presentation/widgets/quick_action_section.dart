@@ -36,7 +36,7 @@ class QuickActionsSection extends StatelessWidget {
             icon: Icons.group_outlined,
           ),
           const ActionButton(title: 'Weekly Report', icon: Icons.bar_chart),
-          // Added the onTap callback to trigger the dialog
+
           ActionButton(
             title: 'Raise Service Request',
             icon: Icons.add_circle_outline,

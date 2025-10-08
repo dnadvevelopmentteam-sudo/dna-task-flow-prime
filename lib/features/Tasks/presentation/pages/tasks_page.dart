@@ -6,6 +6,8 @@ import 'package:dna_taskflow_prime/features/dashboard/domain/entities/kanbancolu
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/task_entity.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/list_board_layout.dart';
+
 List<KanbanColumnEntity> initialKanbanData = [
   KanbanColumnEntity(
     title: 'To Do',
@@ -220,215 +222,215 @@ class _TaskKanbanScreenState extends State<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 30),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 30),
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Task Board',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: context.scaleFont(24),
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF0A0A0A),
-                    ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Task Board',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: context.scaleFont(24),
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF0A0A0A),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Manage and track all your tasks efficiently.',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: Color(0xFF4A5565),
-                    ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Manage and track all your tasks efficiently.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: Color(0xFF4A5565),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // SizedBox(
-                  //   height: 48,
-                  //   child: TextButton.icon(
-                  //     onPressed: () {},
-                  //     icon: const Icon(
-                  //       Icons.color_lens_outlined,
-                  //       size: 20,
-                  //       color: Color(0xFF4A5565),
-                  //     ),
-                  //     label: Text(
-                  //       'Color Guide',
-                  //       style: TextStyle(
-                  //         fontFamily: 'Inter',
-                  //         fontWeight: FontWeight.w500,
-                  //         fontSize: context.scaleFont(14),
-                  //         color: Color(0xFF0A0A0A),
-                  //       ),
-                  //     ),
-                  //     style: TextButton.styleFrom(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 16),
-                  //     ),
-                  //   ),
-                  // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // SizedBox(
+                //   height: 48,
+                //   child: TextButton.icon(
+                //     onPressed: () {},
+                //     icon: const Icon(
+                //       Icons.color_lens_outlined,
+                //       size: 20,
+                //       color: Color(0xFF4A5565),
+                //     ),
+                //     label: Text(
+                //       'Color Guide',
+                //       style: TextStyle(
+                //         fontFamily: 'Inter',
+                //         fontWeight: FontWeight.w500,
+                //         fontSize: context.scaleFont(14),
+                //         color: Color(0xFF0A0A0A),
+                //       ),
+                //     ),
+                //     style: TextButton.styleFrom(
+                //       padding: const EdgeInsets.symmetric(horizontal: 16),
+                //     ),
+                //   ),
+                // ),
 
-                  // const SizedBox(width: 8),
-                  SizedBox(
-                    height: _buttonHeight,
-                    child: ToggleButtons(
-                      isSelected: [_selectedView == 0, _selectedView == 1],
-                      onPressed: (int index) {
-                        setState(() {
-                          _selectedView = index;
-                        });
-                      },
-                      renderBorder: true,
-                      borderColor: AppColors.lightGreyBorder,
-                      selectedBorderColor: AppColors.lightGreyBorder,
-                      fillColor: AppColors.primary,
-                      borderRadius: BorderRadius.circular(_borderRadius),
-                      borderWidth: 1,
-                      constraints: const BoxConstraints(
-                        minHeight: _buttonHeight,
-                        minWidth: 100,
-                      ),
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.list,
-                                size: 20,
+                // const SizedBox(width: 8),
+                SizedBox(
+                  height: _buttonHeight,
+                  child: ToggleButtons(
+                    isSelected: [_selectedView == 0, _selectedView == 1],
+                    onPressed: (int index) {
+                      setState(() {
+                        _selectedView = index;
+                      });
+                    },
+                    renderBorder: true,
+                    borderColor: AppColors.lightGreyBorder,
+                    selectedBorderColor: AppColors.lightGreyBorder,
+                    fillColor: AppColors.primary,
+                    borderRadius: BorderRadius.circular(_borderRadius),
+                    borderWidth: 1,
+                    constraints: const BoxConstraints(
+                      minHeight: _buttonHeight,
+                      minWidth: 100,
+                    ),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.list,
+                              size: 20,
+                              color: _selectedView == 0
+                                  ? Colors.white
+                                  : AppColors.darkGreyText,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'List',
+                              style: TextStyle(
                                 color: _selectedView == 0
                                     ? Colors.white
                                     : AppColors.darkGreyText,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'List',
-                                style: TextStyle(
-                                  color: _selectedView == 0
-                                      ? Colors.white
-                                      : AppColors.darkGreyText,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                      ),
 
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.dashboard_outlined,
-                                size: 20,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.dashboard_outlined,
+                              size: 20,
+                              color: _selectedView == 1
+                                  ? Colors.white
+                                  : AppColors.darkGreyText,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Kanban',
+                              style: TextStyle(
                                 color: _selectedView == 1
                                     ? Colors.white
                                     : AppColors.darkGreyText,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Kanban',
-                                style: TextStyle(
-                                  color: _selectedView == 1
-                                      ? Colors.white
-                                      : AppColors.darkGreyText,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-
-                  // .......................Export Section Starts.........................
-                  // SizedBox(
-                  //   height: 48,
-                  //   child: OutlinedButton.icon(
-                  //     onPressed: () {},
-                  //     icon: const Icon(
-                  //       Icons.file_download_outlined,
-                  //       size: 20,
-                  //       color: Color(0xFF4A5565),
-                  //     ),
-                  //     label: const Text(
-                  //       'Export',
-                  //       style: TextStyle(color: Color(0xFF4A5565)),
-                  //     ),
-                  //     style: OutlinedButton.styleFrom(
-                  //       backgroundColor: Colors.white,
-                  //       side: const BorderSide(color: Color(0xFFE2E8F0)),
-                  //       padding: const EdgeInsets.symmetric(horizontal: 16),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(4),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // .......................Export Section Ends.........................
-                  const SizedBox(width: 16),
-
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext dialogContext) {
-                            return const CreateNewTaskDialog();
-                          },
-                        );
-                      },
-                      icon: const Icon(Icons.add, size: 24),
-                      label: const Text('New Task'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: const Color(0xFF2563EB),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        textStyle: const TextStyle(fontWeight: FontWeight.w600),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        elevation: 0,
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
+                ),
+                const SizedBox(width: 16),
 
-          _selectedView == 1
-              ? KanbanBoardLayout(columns: _kanbanData, onTaskMove: _moveTask)
-              : Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(100.0),
-                    child: Text(
-                      'List View Content Goes Here',
+                // .......................Export Section Starts.........................
+                // SizedBox(
+                //   height: 48,
+                //   child: OutlinedButton.icon(
+                //     onPressed: () {},
+                //     icon: const Icon(
+                //       Icons.file_download_outlined,
+                //       size: 20,
+                //       color: Color(0xFF4A5565),
+                //     ),
+                //     label: Text(
+                //       'Export',
+                //       style: TextStyle(
+                //         fontFamily: 'Inter',
+                //         fontSize: context.scaleFont(14),
+                //         color: Color(0xFF4A5565),
+                //         fontWeight: FontWeight.w500,
+                //       ),
+                //     ),
+                //     style: OutlinedButton.styleFrom(
+                //       backgroundColor: Colors.white,
+                //       side: const BorderSide(color: Color(0xFFE2E8F0)),
+                //       padding: const EdgeInsets.symmetric(horizontal: 16),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(4),
+                //       ),
+                //       textStyle: TextStyle(fontSize: 14),
+                //       elevation: 0,
+                //     ),
+                //   ),
+                // ),
+                // .......................Export Section Ends.........................
+
+                // const SizedBox(width: 16),
+                SizedBox(
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext dialogContext) {
+                          return const CreateNewTaskDialog();
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.add, size: 16),
+                    label: Text(
+                      'New Task',
                       style: TextStyle(
-                        fontSize: 20,
-                        color: AppColors.darkGreyText,
+                        fontFamily: 'Inter',
+                        fontSize: context.scaleFont(14),
+                        fontWeight: FontWeight.w500,
                       ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.primaryDark,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      textStyle: const TextStyle(fontWeight: FontWeight.w600),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      elevation: 0,
                     ),
                   ),
                 ),
-        ],
-      ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 30),
+
+        _selectedView == 1
+            ? KanbanBoardLayout(columns: _kanbanData, onTaskMove: _moveTask)
+            : ListBoardLayout(),
+      ],
     );
   }
 }

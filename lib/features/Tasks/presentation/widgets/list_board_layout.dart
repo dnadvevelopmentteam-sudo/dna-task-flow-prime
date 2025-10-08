@@ -50,17 +50,13 @@ class ListBoardLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Task List UI'),
-        backgroundColor: Colors.pink[50],
-        elevation: 0,
-      ),
-      body: Container(
+    return Expanded(
+      child: Container(
         // Set the background color to match the overall light pink
         color: Colors.pink[50],
         child: ListView.separated(
           itemCount: tasks.length,
+
           separatorBuilder: (context, index) =>
               const SizedBox(height: 8.0), // Space between rows
           itemBuilder: (context, index) {
