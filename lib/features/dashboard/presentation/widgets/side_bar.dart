@@ -1,4 +1,3 @@
-import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/side_bar_menu_item.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +14,8 @@ class Sidebar extends StatelessWidget {
   Sidebar({super.key, required this.selectedIndex, required this.onItemTap});
 
   final List<SidebarItem> menuItems = [
-    SidebarItem(
-      'Dashboard',
-      Image.asset('assets/icons/dashboard_icon.png', width: 24, height: 24),
-    ),
+    SidebarItem('Dashboard', Image.asset('assets/icons/dashboard_icon.png')),
+
     SidebarItem('Tasks', Image.asset('assets/icons/tasks_icon.png')),
     SidebarItem('Clients', Image.asset('assets/icons/clients_icon.png')),
     SidebarItem('Timesheet', Image.asset('assets/icons/timesheet_icon.png')),
@@ -76,27 +73,15 @@ class Sidebar extends StatelessWidget {
             child: Divider(),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.settings_outlined,
-                  color: Colors.grey,
-                  size: 20,
-                ),
-                const SizedBox(width: 10),
-
-                Text(
-                  'Settings',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: context.scaleFont(14),
-                  ),
-                ),
-              ],
-            ),
+          SidebarMenuItem(
+            title: 'Settings',
+            icon: Image.asset('assets/icons/setting_icon.png'),
+            isSelected: menuItems.length == selectedIndex ? true : false,
+            onTap: () {
+              onItemTap(menuItems.length);
+            },
           ),
+          SizedBox(height: 10),
         ],
       ),
     );

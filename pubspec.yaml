@@ -20,7 +20,8 @@ dependencies:
   dotted_border: ^3.1.0
   bloc: ^9.0.1
   equatable: ^2.0.7
-  flutter_feather_icons: ^2.0.0+1
+  syncfusion_flutter_charts: ^31.1.19
+  # flutter_feather_icons: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:dna_taskflow_prime/core/theme/colors.dart';
-import 'package:dna_taskflow_prime/features/Tasks/presentation/widgets/create_new_task_dialoug.dart';
-import 'package:dna_taskflow_prime/features/Tasks/presentation/widgets/kanban_board_layout.dart';
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/kanbancolumn_entity.dart';
 import 'package:dna_taskflow_prime/features/dashboard/domain/entities/task_entity.dart';
+import 'package:dna_taskflow_prime/features/tasks/presentation/widgets/create_new_task_dialoug.dart';
+import 'package:dna_taskflow_prime/features/tasks/presentation/widgets/kanban_board_layout.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/list_board_layout.dart';
@@ -247,8 +247,9 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                 Text(
                   'Manage and track all your tasks efficiently.',
                   style: TextStyle(
+                    fontFamily: 'Inter',
                     fontWeight: FontWeight.w400,
-                    fontSize: 16,
+                    fontSize: context.scaleFont(14),
                     color: Color(0xFF4A5565),
                   ),
                 ),
@@ -284,7 +285,7 @@ class _TaskKanbanScreenState extends State<TasksPage> {
 
                 // const SizedBox(width: 8),
                 SizedBox(
-                  height: _buttonHeight,
+                  height: 40,
                   child: ToggleButtons(
                     isSelected: [_selectedView == 0, _selectedView == 1],
                     onPressed: (int index) {
@@ -295,21 +296,24 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                     renderBorder: true,
                     borderColor: AppColors.lightGreyBorder,
                     selectedBorderColor: AppColors.lightGreyBorder,
-                    fillColor: AppColors.primary,
-                    borderRadius: BorderRadius.circular(_borderRadius),
+                    fillColor: AppColors.primaryDark,
+                    color: Colors.transparent,
+                    selectedColor: Colors.white,
+                    borderRadius: BorderRadius.circular(9.0),
                     borderWidth: 1,
                     constraints: const BoxConstraints(
-                      minHeight: _buttonHeight,
+                      minHeight: 40,
                       minWidth: 100,
                     ),
                     children: <Widget>[
+                      // --- List Button ---
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.list,
-                              size: 20,
+                              Icons.format_list_bulleted,
+                              size: 16,
                               color: _selectedView == 0
                                   ? Colors.white
                                   : AppColors.darkGreyText,
@@ -318,6 +322,9 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                             Text(
                               'List',
                               style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: context.scaleFont(14),
+                                fontWeight: FontWeight.w500,
                                 color: _selectedView == 0
                                     ? Colors.white
                                     : AppColors.darkGreyText,
@@ -326,14 +333,16 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                           ],
                         ),
                       ),
+                      // --- List Button ends ---
 
+                      // --- Kanban Button ---
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Row(
                           children: [
                             Icon(
                               Icons.dashboard_outlined,
-                              size: 20,
+                              size: 16,
                               color: _selectedView == 1
                                   ? Colors.white
                                   : AppColors.darkGreyText,
@@ -342,6 +351,9 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                             Text(
                               'Kanban',
                               style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: context.scaleFont(14),
+                                fontWeight: FontWeight.w500,
                                 color: _selectedView == 1
                                     ? Colors.white
                                     : AppColors.darkGreyText,
@@ -350,6 +362,7 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                           ],
                         ),
                       ),
+                      // --- Kanban Button ends ---
                     ],
                   ),
                 ),
@@ -390,7 +403,7 @@ class _TaskKanbanScreenState extends State<TasksPage> {
 
                 // const SizedBox(width: 16),
                 SizedBox(
-                  height: 48,
+                  height: 40,
                   child: ElevatedButton.icon(
                     onPressed: () {
                       showDialog(
@@ -400,6 +413,7 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                         },
                       );
                     },
+
                     icon: const Icon(Icons.add, size: 16),
                     label: Text(
                       'New Task',
@@ -412,10 +426,13 @@ class _TaskKanbanScreenState extends State<TasksPage> {
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: AppColors.primaryDark,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 8,
+                      ),
                       textStyle: const TextStyle(fontWeight: FontWeight.w600),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       elevation: 0,
                     ),

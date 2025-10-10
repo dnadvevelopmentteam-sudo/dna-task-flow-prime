@@ -1,6 +1,5 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:dna_taskflow_prime/core/theme/colors.dart';
-import 'package:dna_taskflow_prime/features/Tasks/presentation/pages/tasks_page.dart';
 import 'package:dna_taskflow_prime/features/clients/presentation/pages/clients_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/bottom_section_row.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/create_announcment_dialogbox.dart';
@@ -8,7 +7,12 @@ import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/place
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/recent_task_cards.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/side_bar.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart';
+import 'package:dna_taskflow_prime/features/masters/presentation/pages/masters_page.dart';
+import 'package:dna_taskflow_prime/features/tasks/presentation/pages/tasks_page.dart';
+import 'package:dna_taskflow_prime/features/timesheet-team/presentation/pages/timesheet_team_page.dart';
 import 'package:flutter/material.dart';
+
+import '../../../settings/presentation/pages/settings_page.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -24,14 +28,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     TasksPage(),
     ClientsPage(),
     PlaceholderPage(title: 'Timesheet'),
-    PlaceholderPage(title: 'Timesheet-Team'),
+    TimesheetTeamPage(),
     PlaceholderPage(title: 'Recurring Tasks'),
     PlaceholderPage(title: 'Escalations'),
-    PlaceholderPage(title: 'Masters'),
+    MastersPage(),
     PlaceholderPage(title: 'Team'),
     PlaceholderPage(title: 'Reports'),
     PlaceholderPage(title: 'Leaderboards'),
     PlaceholderPage(title: 'Notices'),
+    SettingsContentArea(),
   ];
 
   void _onMenuItemSelected(int index) {
