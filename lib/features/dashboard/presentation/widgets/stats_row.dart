@@ -134,8 +134,6 @@ class StatsRow extends StatelessWidget {
   }
 }
 
-// --- ACTIVE TASKS DIALOG WIDGET --- Starts
-
 class ActiveTasksDialog extends StatelessWidget {
   final bool isMobile;
   const ActiveTasksDialog({super.key, required this.isMobile});
@@ -143,6 +141,7 @@ class ActiveTasksDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color(0xFFFFFFFF),
       elevation: 24,
       // Rounded corners to match the screenshot style
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

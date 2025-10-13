@@ -6,9 +6,14 @@ import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/creat
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/place_holder_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/recent_task_cards.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/side_bar.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart';
+import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart'
+    hide AppColors;
+import 'package:dna_taskflow_prime/features/escalations/presentation/pages/escalations_page.dart';
+import 'package:dna_taskflow_prime/features/leaderboards/presentation/pages/leader_board_page.dart';
 import 'package:dna_taskflow_prime/features/masters/presentation/pages/masters_page.dart';
+import 'package:dna_taskflow_prime/features/notices/presentation/pages/notices_page.dart';
 import 'package:dna_taskflow_prime/features/tasks/presentation/pages/tasks_page.dart';
+import 'package:dna_taskflow_prime/features/team/presentation/pages/team_page.dart';
 import 'package:dna_taskflow_prime/features/timesheet-team/presentation/pages/timesheet_team_page.dart';
 import 'package:flutter/material.dart';
 
@@ -30,12 +35,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     PlaceholderPage(title: 'Timesheet'),
     TimesheetTeamPage(),
     PlaceholderPage(title: 'Recurring Tasks'),
-    PlaceholderPage(title: 'Escalations'),
+    EscalationsScreen(),
     MastersPage(),
-    PlaceholderPage(title: 'Team'),
+    TeamDashboardScreen(),
     PlaceholderPage(title: 'Reports'),
-    PlaceholderPage(title: 'Leaderboards'),
-    PlaceholderPage(title: 'Notices'),
+    LeaderBoardPage(),
+    NoticeBoardScreen(),
     SettingsContentArea(),
   ];
 
@@ -253,7 +258,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-// --- DASHBOARD CONTENT (Index 0) (Unchanged) ---
 class MainDashboardContent extends StatelessWidget {
   MainDashboardContent({super.key});
   void _showCreateAnnouncement(BuildContext context) {
