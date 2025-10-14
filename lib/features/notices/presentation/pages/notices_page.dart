@@ -119,12 +119,12 @@ class NoticeBoardScreen extends StatelessWidget {
                         onPressed: () =>
                             showCreateDialog(context, 'Create Announcement'),
                       ),
-                      ActionButtonNotices(
-                        icon: Icons.add,
-                        label: 'Create Notice',
-                        onPressed: () =>
-                            showCreateDialog(context, 'Create Notice'),
-                      ),
+                      // ActionButtonNotices(
+                      //   icon: Icons.add,
+                      //   label: 'Create Notice',
+                      //   onPressed: () =>
+                      //       showCreateDialog(context, 'Create Notice'),
+                      // ),
                     ],
                   ),
                 ],

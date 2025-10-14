@@ -1,5 +1,7 @@
-import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:flutter/material.dart';
+
+// NOTE: The responsive_extension import was removed as the extension definition is unavailable.
+// The font size has been fixed to 16.0 instead of using context.scaleFont(16).
 
 class DashboardSection extends StatelessWidget {
   final String title;
@@ -32,10 +34,10 @@ class DashboardSection extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF0A0A0A),
                     fontFamily: 'Inter',
-                    fontSize: context.scaleFont(16),
+                    fontSize: 16.0, // Replaced context.scaleFont(16)
                     fontWeight: FontWeight.w600,
                   ),
                 ),

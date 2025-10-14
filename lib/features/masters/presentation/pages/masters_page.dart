@@ -1,4 +1,5 @@
 import 'package:dna_taskflow_prime/features/masters/data/models/master_module.dart';
+import 'package:dna_taskflow_prime/features/masters/features/staff%20management/presentation/pages/staff_management_page.dart';
 import 'package:flutter/material.dart';
 
 void navigateTo(BuildContext context, String destination) {
@@ -29,7 +30,13 @@ final List<MasterModule> mockMasterModules = [
     actionText: "Manage",
     icon: Icons.people_outline,
     iconColor: const Color(0xFF673AB7),
-    destination: "StaffManagement",
+    destination: '',
+    onTap: (context) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => StaffManagementScreen()),
+      );
+    },
   ),
   MasterModule(
     title: "Designations",
@@ -285,6 +292,17 @@ class ModuleCard extends StatefulWidget {
 class _ModuleCardState extends State<ModuleCard> {
   bool _isHovering = false;
 
+  void _handleTap() {
+    if (widget.module.onTap != null) {
+      widget.module.onTap!(context);
+      return;
+    }
+
+    if (widget.module.destination.isNotEmpty) {
+      navigateTo(context, widget.module.destination);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color borderColor = _isHovering
@@ -295,9 +313,7 @@ class _ModuleCardState extends State<ModuleCard> {
         : const Color(0xFFFFFFFF);
 
     return InkWell(
-      onTap: () {
-        navigateTo(context, widget.module.destination);
-      },
+      onTap: _handleTap,
       child: MouseRegion(
         onEnter: (_) => setState(() => _isHovering = true),
         onExit: (_) => setState(() => _isHovering = false),
@@ -398,9 +414,7 @@ class _ModuleCardState extends State<ModuleCard> {
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton(
-        onPressed: () {
-          navigateTo(context, widget.module.destination);
-        },
+        onPressed: _handleTap,
         style: OutlinedButton.styleFrom(
           backgroundColor: const Color(0xFFFFFFFF),
           foregroundColor: textColor,

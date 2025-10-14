@@ -38,7 +38,8 @@ class Sidebar extends StatelessWidget {
       'Leaderboards',
       Image.asset('assets/icons/leaderboards_icon.png'),
     ),
-    SidebarItem('Notices', Image.asset('assets/icons/notices_icon.png')),
+    // SidebarItem('Notices', Image.asset('assets/icons/notices_icon.png')),
+    SidebarItem('Announcements', Image.asset('assets/icons/notices_icon.png')),
   ];
 
   @override

@@ -6,8 +6,7 @@ import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/creat
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/place_holder_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/recent_task_cards.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/side_bar.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart'
-    hide AppColors;
+import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart';
 import 'package:dna_taskflow_prime/features/escalations/presentation/pages/escalations_page.dart';
 import 'package:dna_taskflow_prime/features/leaderboards/presentation/pages/leader_board_page.dart';
 import 'package:dna_taskflow_prime/features/masters/presentation/pages/masters_page.dart';
@@ -15,6 +14,7 @@ import 'package:dna_taskflow_prime/features/notices/presentation/pages/notices_p
 import 'package:dna_taskflow_prime/features/tasks/presentation/pages/tasks_page.dart';
 import 'package:dna_taskflow_prime/features/team/presentation/pages/team_page.dart';
 import 'package:dna_taskflow_prime/features/timesheet-team/presentation/pages/timesheet_team_page.dart';
+import 'package:dna_taskflow_prime/features/timesheet/presentation/pages/time_sheet_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../settings/presentation/pages/settings_page.dart';
@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     MainDashboardContent(),
     TasksPage(),
     ClientsPage(),
-    PlaceholderPage(title: 'Timesheet'),
+    TimeSheetPage(),
     TimesheetTeamPage(),
     PlaceholderPage(title: 'Recurring Tasks'),
     EscalationsScreen(),
@@ -338,19 +338,42 @@ class MainDashboardContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
+                color: const Color(0xFFFFFFFF),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  side: const BorderSide(color: Color(0xFFE0E0E0), width: 1.0),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: 600,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: recents.length,
-                      itemBuilder: (context, index) =>
-                          RecentTaskCard(data: recents[index]),
-                    ),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        'My Recent Tasks',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      SizedBox(
+                        width: 600,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: recents.length,
+                          itemBuilder: (context, index) =>
+                              RecentTaskCard(data: recents[index]),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+
               Spacer(),
               SizedBox(
                 // width: 198,

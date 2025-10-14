@@ -84,7 +84,7 @@ class _SettingsContentAreaState extends State<SettingsContentArea> {
     );
   }
 
-  // Helper method to switch the content based on the selected tab
+  // Helper method to switch the content based on the selected ta
   Widget _buildContent() {
     switch (_selectedTab) {
       case SettingsTab.profile:

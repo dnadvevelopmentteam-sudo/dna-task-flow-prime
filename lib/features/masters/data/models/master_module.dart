@@ -8,6 +8,7 @@ class MasterModule {
   final IconData icon;
   final Color iconColor;
   final String destination;
+  final void Function(BuildContext)? onTap;
 
   MasterModule({
     required this.title,
@@ -17,5 +18,6 @@ class MasterModule {
     required this.icon,
     required this.iconColor,
     required this.destination,
+    this.onTap,
   });
 }
