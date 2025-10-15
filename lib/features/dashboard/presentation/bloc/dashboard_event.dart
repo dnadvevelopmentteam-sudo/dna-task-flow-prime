@@ -6,3 +6,9 @@ abstract class DashboardEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class TabUpdateEvent extends DashboardEvent {
+  final int selectedIndex;
+
+  const TabUpdateEvent({required this.selectedIndex});
+}

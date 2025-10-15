@@ -1,15 +1,16 @@
 import 'package:dna_taskflow_prime/features/masters/features/staff%20management/presentation/pages/staff_management_page.dart';
 import 'package:flutter/material.dart';
 
-class BackButton extends StatefulWidget {
+class CustomBackButton extends StatefulWidget {
   final VoidCallback onPressed;
-  const BackButton({super.key, required this.onPressed});
+
+  const CustomBackButton({super.key, required this.onPressed});
 
   @override
-  State<BackButton> createState() => BackButtonState();
+  State<CustomBackButton> createState() => BackButtonState();
 }
 
-class BackButtonState extends State<BackButton> {
+class BackButtonState extends State<CustomBackButton> {
   bool _isHovering = false;
 
   @override

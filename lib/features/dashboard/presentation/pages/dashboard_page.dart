@@ -1,12 +1,14 @@
+import 'package:dna_taskflow_prime/core/enums/quick_action_enum.dart';
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:dna_taskflow_prime/features/clients/presentation/pages/clients_page.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/bottom_section_row.dart';
+import 'package:dna_taskflow_prime/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/create_announcment_dialogbox.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/place_holder_page.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/recent_task_cards.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/side_bar.dart';
-import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart';
+import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/stats_row.dart'
+    hide AppColors;
 import 'package:dna_taskflow_prime/features/escalations/presentation/pages/escalations_page.dart';
 import 'package:dna_taskflow_prime/features/leaderboards/presentation/pages/leader_board_page.dart';
 import 'package:dna_taskflow_prime/features/masters/presentation/pages/masters_page.dart';
@@ -16,8 +18,12 @@ import 'package:dna_taskflow_prime/features/team/presentation/pages/team_page.da
 import 'package:dna_taskflow_prime/features/timesheet-team/presentation/pages/timesheet_team_page.dart';
 import 'package:dna_taskflow_prime/features/timesheet/presentation/pages/time_sheet_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../settings/presentation/pages/settings_page.dart';
+import '../widgets/leadboard_section.dart';
+import '../widgets/my_assest_section.dart';
+import '../widgets/quick_action_section.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -27,7 +33,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _selectedIndex = 0;
   final List<Widget> _pages = [
     MainDashboardContent(),
     TasksPage(),
@@ -45,53 +50,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ];
 
   void _onMenuItemSelected(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
+    dashboardBloc.add(TabUpdateEvent(selectedIndex: index));
     if (context.isDrawerMode) {
       Navigator.of(context).pop();
     }
+  }
+
+  late DashboardBloc dashboardBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    dashboardBloc = BlocProvider.of<DashboardBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final isDesktop = !context.isDrawerMode;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: isDesktop
-          ? null
-          : Drawer(
-              child: Sidebar(
-                selectedIndex: _selectedIndex,
-                onItemTap: _onMenuItemSelected,
-              ),
-            ),
-      body: Row(
-        children: <Widget>[
-          if (isDesktop)
-            Sidebar(
-              selectedIndex: _selectedIndex,
-              onItemTap: _onMenuItemSelected,
-            ),
+    return BlocBuilder(
+      bloc: dashboardBloc,
+      builder: (context, state) {
+        if (state is UpdatedTabIndex) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            drawer: isDesktop
+                ? null
+                : Drawer(
+                    child: Sidebar(
+                      selectedIndex: state.index,
+                      onItemTap: _onMenuItemSelected,
+                    ),
+                  ),
+            body: Row(
+              children: <Widget>[
+                if (isDesktop)
+                  Sidebar(
+                    selectedIndex: state.index,
+                    onItemTap: _onMenuItemSelected,
+                  ),
 
-          Expanded(
-            child: Column(
-              children: [
-                _buildCustomAppBar(isDesktop, context),
-                Divider(),
                 Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: _pages[_selectedIndex],
+                  child: Column(
+                    children: [
+                      _buildCustomAppBar(isDesktop, context),
+                      Divider(),
+                      Expanded(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: _pages[state.index],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ), // Display the selected page
-          ),
-        ],
-      ),
+            ),
+          );
+        } else {
+          return Scaffold(body: CircularProgressIndicator());
+        }
+      },
     );
   }
 
@@ -184,10 +203,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           icon: SizedBox(
             width: 36,
             height: 36,
-            child: const ImageIcon(
-              AssetImage('assets/icons/Bell.png'),
-              // color: Colors.grey,
-            ),
+            child: const ImageIcon(AssetImage('assets/icons/Bell.png')),
           ),
           onPressed: () {},
         ),
@@ -303,6 +319,7 @@ class MainDashboardContent extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    bool isMobile = context.isMobile;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(30.0),
       child: Column(
@@ -330,51 +347,118 @@ class MainDashboardContent extends StatelessWidget {
           const SizedBox(height: 30),
           const StatsRow(),
           const SizedBox(height: 30),
-          const BottomSectionsRow(),
+          if (isMobile)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                LeaderboardSection(),
+                SizedBox(height: 20),
+                QuickActionsSection(
+                  onTap: (p0) {
+                    switch (p0) {
+                      case QuickActionEnum.log_entry:
+                        BlocProvider.of<DashboardBloc>(
+                          context,
+                        ).add(TabUpdateEvent(selectedIndex: 3));
+                        break;
+                      case QuickActionEnum.weelkly_report:
+                        BlocProvider.of<DashboardBloc>(
+                          context,
+                        ).add(TabUpdateEvent(selectedIndex: 1));
+                        break;
+                      case QuickActionEnum.view_team_tasks:
+                        BlocProvider.of<DashboardBloc>(
+                          context,
+                        ).add(TabUpdateEvent(selectedIndex: 1));
+                        break;
+                    }
+                  },
+                ),
+                SizedBox(height: 20),
+                MyAssetsSection(),
+              ],
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(flex: 2, child: LeaderboardSection()),
+                SizedBox(width: 20),
+                Expanded(
+                  flex: 2,
+                  child: QuickActionsSection(
+                    onTap: (p0) {
+                      switch (p0) {
+                        case QuickActionEnum.log_entry:
+                          BlocProvider.of<DashboardBloc>(
+                            context,
+                          ).add(TabUpdateEvent(selectedIndex: 3));
+                          break;
+                        case QuickActionEnum.weelkly_report:
+                          BlocProvider.of<DashboardBloc>(
+                            context,
+                          ).add(TabUpdateEvent(selectedIndex: 1));
+                          break;
+                        case QuickActionEnum.view_team_tasks:
+                          BlocProvider.of<DashboardBloc>(
+                            context,
+                          ).add(TabUpdateEvent(selectedIndex: 1));
+                          break;
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(width: 20),
+                Expanded(flex: 2, child: MyAssetsSection()),
+              ],
+            ),
 
           // ),
           const SizedBox(height: 30),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Card(
-                color: const Color(0xFFFFFFFF),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: const BorderSide(color: Color(0xFFE0E0E0), width: 1.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Text(
-                        'My Recent Tasks',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+              Expanded(
+                flex: 2,
+                child: Card(
+                  color: const Color(0xFFFFFFFF),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: const BorderSide(
+                      color: Color(0xFFE0E0E0),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          'My Recent Tasks',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      SizedBox(
-                        width: 600,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: recents.length,
-                          itemBuilder: (context, index) =>
-                              RecentTaskCard(data: recents[index]),
+                        const SizedBox(height: 16.0),
+                        SizedBox(
+                          height: 400,
+                          child: ListView.builder(
+                            itemCount: recents.length,
+                            itemBuilder: (context, index) =>
+                                RecentTaskCard(data: recents[index]),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-
-              Spacer(),
+              SizedBox(width: 200),
               SizedBox(
                 // width: 198,
                 // height: 64,
@@ -385,7 +469,7 @@ class MainDashboardContent extends StatelessWidget {
                   label: const Text('Create Announcement'),
                   icon: const Icon(Icons.add, size: 20),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.primaryDark,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

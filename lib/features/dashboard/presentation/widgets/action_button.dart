@@ -33,7 +33,7 @@ class _ActionButtonState extends State<ActionButton> {
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryColor = AppColors.primary;
+    final Color primaryColor = AppColors.primaryDark;
     const Color defaultBorderColor = Color(0xFFEEEEEE);
     final Color hoverBgColor = Colors.grey;
     final Color defaultIconColor = Colors.grey.shade700;
@@ -50,7 +50,7 @@ class _ActionButtonState extends State<ActionButton> {
       textColor = Colors.white;
       borderSide = BorderSide.none;
     } else if (_isHovering) {
-      backgroundColor = hoverBgColor;
+      backgroundColor = hoverBgColor.withOpacity(0.2);
       iconColor = primaryColor;
       textColor = primaryColor;
       borderSide = BorderSide(color: primaryColor, width: 1);
@@ -62,7 +62,7 @@ class _ActionButtonState extends State<ActionButton> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: MouseRegion(
         onEnter: (_) => _onHover(true),
         onExit: (_) => _onHover(false),
@@ -71,19 +71,19 @@ class _ActionButtonState extends State<ActionButton> {
           curve: Curves.easeOut,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(9),
             border: Border.all(
               color: borderSide.color,
               width: borderSide.width,
             ),
-            boxShadow: [
-              if (widget.isPrimary)
-                BoxShadow(
-                  color: primaryColor.withOpacity(0.3),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-            ],
+            // boxShadow: [
+            //   if (widget.isPrimary)
+            //     BoxShadow(
+            //       color: primaryColor.withOpacity(0.3),
+            //       blurRadius: 4,
+            //       offset: const Offset(0, 2),
+            //     ),
+            // ],
           ),
           child: Material(
             color: Colors.transparent,
@@ -91,7 +91,7 @@ class _ActionButtonState extends State<ActionButton> {
               onTap: widget.onTap,
               borderRadius: BorderRadius.circular(8),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0).copyWith(left: 16),
                 child: Row(
                   children: [
                     Icon(widget.icon, color: iconColor, size: 20),
@@ -99,6 +99,7 @@ class _ActionButtonState extends State<ActionButton> {
                     Text(
                       widget.title,
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         color: textColor,
                         fontWeight: widget.isPrimary || _isHovering
                             ? FontWeight.w600

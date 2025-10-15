@@ -1,5 +1,7 @@
+import 'package:dna_taskflow_prime/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,14 +16,10 @@ class MyApp extends StatelessWidget {
       // title: 'Admin Dashboard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter', useMaterial3: true),
-      home: const DashboardScreen(),
-      // home: const SignInScreen(),
-      // home: const TaskKanbanScreen(),
-      // home: const ClientsScreenContent(),
-      // home:  TimesheetScreen(),
-      // home: TeamTimesheetScreen(),
-      // home: EscalationsScreen(),
-      // home: TeamDashboardScreen(),
+      home: MultiBlocProvider(
+        providers: [BlocProvider<DashboardBloc>.value(value: DashboardBloc())],
+        child: DashboardScreen(),
+      ),
     );
   }
 }

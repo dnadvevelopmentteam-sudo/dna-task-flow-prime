@@ -17,7 +17,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
 
   String? _selectedCategory = 'Technical Support';
   String? _selectedPriority = 'Medium';
-  String? _selectedAsset;
+  String? _selectedAsset = 'No specific asset';
 
   final List<String> _categories = [
     'Technical Support',
@@ -79,6 +79,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
             color: Colors.grey.shade800,
             fontWeight: FontWeight.w600,
             fontSize: 14,
+            fontFamily: 'Inter',
           ),
           children: isRequired
               ? [
@@ -99,17 +100,61 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
     double? height,
   }) {
     final bool isActive = _activeField == field;
-    return Container(
-      height: height,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: isActive ? Colors.blue.shade700 : Colors.grey.shade300,
-          width: isActive ? 2.0 : 1.0,
+    return GestureDetector(
+      onTap: () {
+        if (field != _ActiveField.title && field != _ActiveField.description) {
+          setState(() {
+            _activeField = field;
+          });
+        }
+      },
+      child: Container(
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: isActive ? Colors.blue.shade700 : Colors.grey.shade300,
+            width: isActive ? 2.0 : 1.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        borderRadius: BorderRadius.circular(8.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: child,
+        ),
       ),
-      child: child,
+    );
+  }
+
+  Color _getPriorityChipColor(String value) {
+    if (value == 'Medium') return Colors.orange.shade100;
+    if (value == 'High') return Colors.red.shade100;
+    if (value == 'Critical') return Colors.red.shade400;
+    return Colors.grey.shade200;
+  }
+
+  Color _getPriorityTextColor(String value) {
+    if (value == 'Medium') return Colors.orange.shade700;
+    if (value == 'High') return Colors.red.shade700;
+    if (value == 'Critical') return Colors.white;
+    return Colors.grey.shade800;
+  }
+
+  Widget _buildPriorityChip(String value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: _getPriorityChipColor(value),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        value,
+        style: TextStyle(
+          color: _getPriorityTextColor(value),
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+        ),
+      ),
     );
   }
 
@@ -136,7 +181,6 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 16, 16),
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -152,7 +196,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Submit a request for technical support,hardware issues, or other \nassistance.',
+                        'Submit a request for technical support, hardware issues, or other \nassistance.',
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.grey.shade600,
@@ -168,7 +212,6 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
               ),
             ),
 
-            // const Divider(height: 1, thickness: 1),
             Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
@@ -180,10 +223,15 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                     height: 48,
                     child: TextFormField(
                       focusNode: _titleFocus,
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                        color: Colors.grey.shade800,
+                        fontSize: 14,
+                      ),
+                      decoration: InputDecoration(
                         hintText: 'Brief description of the issue',
+                        hintStyle: TextStyle(color: Colors.grey.shade500),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
@@ -228,6 +276,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                             );
                           },
                           hint: const Text("Select category"),
+                          padding: const EdgeInsets.only(right: 12, left: 16),
                         ),
                       ),
                     ),
@@ -252,39 +301,18 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                             color: Colors.grey.shade800,
                             fontSize: 14,
                           ),
+                          selectedItemBuilder: (context) {
+                            return _priorities.map((String value) {
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: _buildPriorityChip(value),
+                              );
+                            }).toList();
+                          },
                           items: _priorities.map((String value) {
-                            Color chipColor = Colors.grey.shade200;
-                            Color textColor = Colors.grey.shade800;
-                            if (value == 'Medium') {
-                              chipColor = Colors.orange.shade100;
-                              textColor = Colors.orange.shade700;
-                            } else if (value == 'High') {
-                              chipColor = Colors.red.shade100;
-                              textColor = Colors.red.shade700;
-                            } else if (value == 'Critical') {
-                              chipColor = Colors.red.shade400;
-                              textColor = Colors.white;
-                            }
-
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: chipColor,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
+                              child: _buildPriorityChip(value),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -299,6 +327,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                             );
                           },
                           hint: const Text("Select priority"),
+                          padding: const EdgeInsets.only(right: 12, left: 16),
                         ),
                       ),
                     ),
@@ -338,10 +367,11 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                           onTap: () {
                             setState(() => _activeField = _ActiveField.asset);
                           },
-                          hint: const Text(
+                          hint: Text(
                             "No specific asset",
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey.shade500),
                           ),
+                          padding: const EdgeInsets.only(right: 12, left: 16),
                         ),
                       ),
                     ),
@@ -357,11 +387,16 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                       maxLines: null,
                       expands: true,
                       textAlignVertical: TextAlignVertical.top,
-                      decoration: const InputDecoration(
+                      style: TextStyle(
+                        color: Colors.grey.shade800,
+                        fontSize: 14,
+                      ),
+                      decoration: InputDecoration(
                         hintText:
                             'Provide detailed information about your request...',
+                        hintStyle: TextStyle(color: Colors.grey.shade500),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
@@ -373,7 +408,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
               ),
             ),
 
-            // const Divider(height: 1, thickness: 1),
+            Divider(height: 1, thickness: 1, color: Colors.grey.shade200),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Align(
@@ -389,12 +424,12 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                           vertical: 12,
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Cancel',
                         style: TextStyle(
-                          color: Color(0xFF0A0A0A),
-                          fontFamily: 'Inter',
+                          color: Colors.grey.shade800,
                           fontWeight: FontWeight.w600,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -413,10 +448,14 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: 0,
+                        minimumSize: const Size(140, 48),
                       ),
                       child: const Text(
                         'Submit Request',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],

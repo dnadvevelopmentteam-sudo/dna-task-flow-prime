@@ -7,35 +7,38 @@ class MyAssetsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DashboardSection(
-      title: 'My Assets',
-      trailing: Text(
-        '0 assigned',
-        style: TextStyle(
-          color: Colors.grey.shade600,
-          fontSize: context.scaleFont(14),
+    return SizedBox(
+      height: 300,
+      child: DashboardSection(
+        title: 'My Assets',
+        trailing: Text(
+          '0 assigned',
+          style: TextStyle(
+            color: Colors.grey.shade600,
+            fontSize: context.scaleFont(14),
+          ),
         ),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            Icon(
-              Icons.monitor,
-              size: context.scaleFont(60),
-              color: Colors.grey.shade300,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'No assets assigned to you yet',
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: context.scaleFont(14),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Icon(
+                Icons.monitor,
+                size: context.scaleFont(60),
+                color: Colors.grey.shade300,
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 10),
+              Text(
+                'No assets assigned to you yet',
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: context.scaleFont(14),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

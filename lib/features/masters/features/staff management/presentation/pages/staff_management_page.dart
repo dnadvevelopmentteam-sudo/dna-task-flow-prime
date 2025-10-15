@@ -1,3 +1,4 @@
+import 'package:dna_taskflow_prime/features/masters/features/staff%20management/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 const Color kDefaultBreadcrumbColor = Color(0xFF4A5565);
@@ -48,15 +49,15 @@ class _BackButtonState extends State<_BackButton> {
   }
 }
 
-class _HomeIcon extends StatefulWidget {
+class HomeIcon extends StatefulWidget {
   final VoidCallback onPressed;
-  const _HomeIcon({required this.onPressed});
+  const HomeIcon({super.key, required this.onPressed});
 
   @override
-  State<_HomeIcon> createState() => _HomeIconState();
+  State<HomeIcon> createState() => HomeIconState();
 }
 
-class _HomeIconState extends State<_HomeIcon> {
+class HomeIconState extends State<HomeIcon> {
   bool _isHovering = false;
 
   @override
@@ -81,15 +82,15 @@ class _HomeIconState extends State<_HomeIcon> {
 }
 
 // Widget for the 'Masters' Text with Hover effect
-class _MastersBreadcrumbItem extends StatefulWidget {
+class MastersBreadcrumbItem extends StatefulWidget {
   final VoidCallback onPressed;
-  const _MastersBreadcrumbItem({required this.onPressed});
+  const MastersBreadcrumbItem({super.key, required this.onPressed});
 
   @override
-  State<_MastersBreadcrumbItem> createState() => _MastersBreadcrumbItemState();
+  State<MastersBreadcrumbItem> createState() => MastersBreadcrumbItemState();
 }
 
-class _MastersBreadcrumbItemState extends State<_MastersBreadcrumbItem> {
+class MastersBreadcrumbItemState extends State<MastersBreadcrumbItem> {
   bool _isHovering = false;
 
   @override
@@ -119,66 +120,6 @@ class _MastersBreadcrumbItemState extends State<_MastersBreadcrumbItem> {
 }
 
 // Full Custom AppBar to structure the navigation (Requirement 2)
-class _CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String currentScreen;
-
-  const _CustomAppBar({required this.currentScreen});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50.0, // Consistent with your requirement
-      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: kDividerColor, width: 1.0)),
-      ),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Back Button
-          _BackButton(onPressed: () => Navigator.pop(context)),
-          const SizedBox(width: 24),
-
-          // Home Icon
-          _HomeIcon(onPressed: () {}),
-          const SizedBox(width: 8),
-
-          // Masters Link
-          _MastersBreadcrumbItem(
-            onPressed: () {
-              // Placeholder: Navigate back to the Masters hub (e.g., pop)
-              Navigator.pop(context);
-            },
-          ),
-          const SizedBox(width: 8),
-
-          // Separator
-          const Icon(
-            Icons.chevron_right,
-            size: 16,
-            color: kDefaultBreadcrumbColor,
-          ),
-          const SizedBox(width: 8),
-
-          // Current Screen (Non-interactive)
-          Text(
-            currentScreen,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF0A0A0A),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(50.0);
-}
 
 class StaffManagementScreen extends StatelessWidget {
   const StaffManagementScreen({super.key});
@@ -188,7 +129,7 @@ class StaffManagementScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       // Apply the new Custom AppBar
-      appBar: const _CustomAppBar(currentScreen: "Staff Management"),
+      appBar: const CustomAppBar(currentScreen: "Staff Management"),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),

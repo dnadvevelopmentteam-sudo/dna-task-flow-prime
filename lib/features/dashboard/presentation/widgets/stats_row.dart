@@ -7,9 +7,7 @@ class StatsRow extends StatelessWidget {
   const StatsRow({super.key});
 
   void _showActiveTasksDialog(BuildContext context) {
-    // Determine the width based on screen size
     final screenWidth = MediaQuery.of(context).size.width;
-    // Treat any screen narrower than 600px as 'mobile'
     final isMobile = screenWidth < 600;
 
     showDialog(
@@ -19,9 +17,8 @@ class StatsRow extends StatelessWidget {
         return Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              // Max width for desktop/web modal (adjust as needed)
-              maxWidth: isMobile ? screenWidth * 0.95 : 800,
-              maxHeight: MediaQuery.of(context).size.height * 0.9,
+              maxWidth: isMobile ? screenWidth * 0.95 : 860,
+              maxHeight: MediaQuery.of(context).size.height * 0.85,
             ),
             child: ActiveTasksDialog(isMobile: isMobile),
           ),
@@ -30,19 +27,21 @@ class StatsRow extends StatelessWidget {
     );
   }
 
-  // Function to show the Hours Logged dialog
   void _showHoursLoggedDialog(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     showDialog(
       context: context,
+      barrierDismissible: true,
       builder: (BuildContext context) {
-        // Use Center and ConstrainedBox for a desktop/web-style modal
         return Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 600, // Appropriate width for the content
-              maxHeight: 700, // Max height to allow scrolling if content grows
+            constraints: BoxConstraints(
+              maxWidth: isMobile ? screenWidth * 0.95 : 860,
+              maxHeight: MediaQuery.of(context).size.height * 0.85,
             ),
-            child: HoursLoggedDialog(),
+            child: HoursLoggedDialog(isMobile: isMobile),
           ),
         );
       },
@@ -141,11 +140,9 @@ class ActiveTasksDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color(0xFFFFFFFF),
+      color: const Color(0xFFFFFFFF),
       elevation: 24,
-      // Rounded corners to match the screenshot style
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      // Minimal margin to ensure it can fill the ConstrainedBox
       margin: EdgeInsets.symmetric(horizontal: isMobile ? 8 : 0, vertical: 0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -153,28 +150,23 @@ class ActiveTasksDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // Header
             _buildHeader(context),
-            // Content is wrapped in SingleChildScrollView for guaranteed scrolling
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(
-                  20.0,
-                ), // Padding adjusted to match screenshot
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Section 1: Overview Cards
                     _buildOverviewSection(context),
-                    const SizedBox(height: 20), // Spacing between sections
-                    // Section 2: Active Tasks List
+                    const SizedBox(height: 20),
                     _buildTasksListSection(),
+                    SizedBox(height: 20),
+
+                    _buildFooter(context),
                   ],
                 ),
               ),
             ),
-            // Footer with Close button
-            _buildFooter(context),
           ],
         ),
       ),
@@ -183,17 +175,8 @@ class ActiveTasksDialog extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      color: Color(0xFFFFFFFF),
-      // width: 781,
-      // height: 565,
+      color: const Color(0xFFFFFFFF),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      // decoration: BoxDecoration(
-      // color: Theme.of(context).cardColor,
-      // Line under the header
-      //   border: Border(
-      //     bottom: BorderSide(color: Colors.grey.shade100, width: 1),
-      //   ),
-      // ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -203,12 +186,11 @@ class ActiveTasksDialog extends StatelessWidget {
               fontFamily: 'Inter',
               fontSize: context.scaleFont(16),
               fontWeight: FontWeight.w600,
-              color: Color(0xFF0A0A0A),
+              color: const Color(0xFF0A0A0A),
             ),
           ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.grey),
-
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -217,11 +199,9 @@ class ActiveTasksDialog extends StatelessWidget {
   }
 
   Widget _buildOverviewSection(BuildContext context) {
-    // List of data for the four stat cards
     final stats = [
       {
         'value': '4',
-
         'label': 'Total Active',
         'color': const Color(0xFF1D4ED8),
       }, // Blue
@@ -242,12 +222,10 @@ class ActiveTasksDialog extends StatelessWidget {
       }, // Green
     ];
 
-    // Use GridView for a consistent, responsive layout
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Adjust column count based on available width
         final crossAxisCount = constraints.maxWidth > 500 ? 4 : 2;
-        final childAspectRatio = constraints.maxWidth > 500 ? 1.4 : 2.2;
+        final childAspectRatio = constraints.maxWidth > 500 ? 1.9 : 2.2;
 
         return GridView.builder(
           shrinkWrap: true,
@@ -255,7 +233,7 @@ class ActiveTasksDialog extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             childAspectRatio: childAspectRatio,
-            crossAxisSpacing: 10, // Spacing between cards
+            crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),
           itemCount: stats.length,
@@ -279,48 +257,65 @@ class ActiveTasksDialog extends StatelessWidget {
         'assignee': 'Priya Sharma',
         'tag': 'High',
         'status': 'Doing',
-        'overdue': 'Overdue 40d 20h', // Matches the screenshot
+        'overdue': 'Overdue 421d 11h',
         'progressText': 'Progress: 2.5h / 4h',
         'progressValue': 0.63, // 63%
       },
       {
-        'title':
-            'GSTR-1 Filing for Acme Corp', // Duplicate task to match screenshot layout
-        'client': 'Acme Corporation',
+        'title': 'Income Tax Return - Q2 Review',
+        'client': 'Tech Solutions Ltd',
         'assignee': 'Priya Sharma',
-        'tag': 'High',
-        'status': 'Doing',
-        'overdue': 'Overdue 40d 20h', // Matches the screenshot
-        'progressText': 'Progress: 2.5h / 4h',
-        'progressValue': 0.63,
+        'tag': 'Medium',
+        'status': 'ToDo',
+        'overdue': 'Overdue 419d 11h',
+        'progressText': 'Progress: 0h / 6h',
+        'progressValue': 0.0,
       },
-
       {
-        'title': 'GSTR-1 Filing for Acme Corp',
-        'client': 'Acme Corporation',
+        'title': 'Unlabeled Task',
+        'client': 'Tech Solutions Ltd',
         'assignee': 'Priya Sharma',
         'tag': 'High',
-        'status': 'Doing',
-        'overdue': 'Overdue 40d 20h',
-        'progressText': 'Progress: 2.5h / 4h',
-        'progressValue': 0.63,
+        'status': 'Overdue',
+        'overdue': 'Overdue 419d 11h',
+        'progressText': 'Progress: 0h / 6h',
+        'progressValue': 0.0,
+      },
+      {
+        'title': 'TDS Compliance Check',
+        'client': 'Manufacturing Co',
+        'assignee': 'Priya Sharma',
+        'tag': 'High',
+        'status': 'Review TM',
+        'overdue': 'Overdue 423d 11h',
+        'progressText': 'Progress: 2.8h / 3h',
+        'progressValue': 0.93, // 93%
+      },
+      {
+        'title': 'Monthly MIS Report',
+        'client': 'Retail Stores Pvt',
+        'assignee': 'Priya Sharma',
+        'tag': 'Low',
+        'status': 'ToDo',
+        'overdue': 'Overdue 416d 11h',
+        'progressText': 'Progress: 0h / 2h',
+        'progressValue': 0.0,
       },
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Your Active Tasks',
           style: TextStyle(
             fontFamily: 'Inter',
-            // fontSize: context.scaleFont(16),
             fontWeight: FontWeight.w600,
             color: Color(0xFF101828),
           ),
         ),
         const SizedBox(height: 12),
-        // Use ListView.builder for efficient list building
+
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -328,7 +323,6 @@ class ActiveTasksDialog extends StatelessWidget {
           itemBuilder: (context, index) {
             final task = tasks[index];
             return Padding(
-              // Remove bottom padding for the last item if you want the list to hug the bottom
               padding: EdgeInsets.only(
                 bottom: index == tasks.length - 1 ? 0 : 12.0,
               ),
@@ -353,11 +347,10 @@ class ActiveTasksDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       alignment: Alignment.centerRight,
-      // Top border to separate from the content, matching the screenshot's visual break
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        border: Border(top: BorderSide(color: Colors.grey.shade100, width: 1)),
-      ),
+      // decoration: BoxDecoration(
+      //   color: Theme.of(context).cardColor,
+      //   border: Border(top: BorderSide(color: Colors.grey.shade100, width: 1)),
+      // ),
       child: SizedBox(
         width: 120,
         child: ElevatedButton(
@@ -365,11 +358,9 @@ class ActiveTasksDialog extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 15),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                8.0,
-              ), // Rounded corners for button
+              borderRadius: BorderRadius.circular(8.0),
             ),
             elevation: 2,
           ),
@@ -387,8 +378,6 @@ class ActiveTasksDialog extends StatelessWidget {
   }
 }
 
-// --- OVERVIEW CARD WIDGET ---
-
 class _TaskOverviewCard extends StatelessWidget {
   final String value;
   final String label;
@@ -404,12 +393,10 @@ class _TaskOverviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Colors.grey.shade300,
-          width: 1,
-        ), // Light border
+        // border: Border.all(
+        //   color: Colors.grey.shade300, width: 1),
       ),
       padding: const EdgeInsets.all(12),
       child: Column(
@@ -432,7 +419,7 @@ class _TaskOverviewCard extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: context.scaleFont(12),
-              color: Color(0xFF4A5565),
+              color: const Color(0xFF4A5565),
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -441,8 +428,6 @@ class _TaskOverviewCard extends StatelessWidget {
     );
   }
 }
-
-// --- TASK LIST ITEM WIDGET ---
 
 class _TaskListItem extends StatelessWidget {
   final String title;
@@ -465,60 +450,113 @@ class _TaskListItem extends StatelessWidget {
     required this.progressValue,
   });
 
-  // Helper function to get color for the Priority Tag
   Color _getTagColor() {
     switch (tag.toLowerCase()) {
       case 'high':
-        return const Color(0xFFEF4444); // Red
+        return const Color(0xFFEF4444);
       case 'medium':
-        return const Color(0xFFFBBF24); // Amber
+        return const Color(0xFFFBBF24);
       case 'low':
-        return const Color(0xFF10B981); // Green
+        return const Color(0xFF10B981);
       default:
         return Colors.grey;
     }
   }
 
-  // Helper for the small status/tag chips
+  Color _getStatusColor() {
+    switch (status.toLowerCase()) {
+      case 'doing':
+        return const Color(0xFF1D4ED8);
+      case 'review tm':
+        return const Color(0xFFFBBF24);
+      case 'todo':
+        return Colors.grey.shade600;
+      case 'overdue':
+        return const Color(0xFFDC2626);
+      default:
+        return Colors.grey;
+    }
+  }
+
   Widget _buildChip({
     required String text,
     required Color backgroundColor,
     required Color textColor,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: textColor.withOpacity(0.2), width: 1),
       ),
       child: Text(
         text,
         style: TextStyle(
           fontSize: 12,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           color: textColor,
         ),
       ),
     );
   }
 
+  Widget _buildOverdueChip() {
+    if (overdue.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red),
+        color: const Color(0xFFFEE2E2),
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.warning_amber_rounded,
+            size: 14,
+            color: Color(0xFFDC2626),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            'Overdue $overdue',
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFFDC2626),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Get colors for High (red) and Doing (blue)
     final tagColor = _getTagColor();
-    final statusColor = const Color(0xFF1D4ED8); // Darker blue for status
+    final statusColor = _getStatusColor();
+    final percentage = (progressValue * 100).toInt();
+    final progressTime = progressText.replaceAll('Progress: ', '');
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade100,
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
         border: Border.all(color: Colors.grey.shade200, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Row 1: Title, Tags (High & Doing)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -530,11 +568,12 @@ class _TaskListItem extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
+                        color: Color(0xFF1F2937),
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       client,
                       style: TextStyle(
@@ -547,99 +586,99 @@ class _TaskListItem extends StatelessWidget {
               ),
               Row(
                 children: [
-                  // High Tag
                   _buildChip(
                     text: tag,
-                    backgroundColor: tagColor.withOpacity(0.1),
+                    backgroundColor: tagColor.withOpacity(0.05),
                     textColor: tagColor,
                   ),
                   const SizedBox(width: 8),
-                  // Doing Status
                   _buildChip(
                     text: status,
-                    backgroundColor: statusColor.withOpacity(0.1),
+                    backgroundColor: statusColor.withOpacity(0.05),
                     textColor: statusColor,
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
 
-          // Row 2: Assignee, Overdue Chip, and Progress Text/Bar
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                assignee,
-                style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-              ),
-              // Overdue Chip - styled to match screenshot
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFEE2E2), // Light red background
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  overdue,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFDC2626), // Red text
+              Row(
+                children: [
+                  const Icon(
+                    Icons.person_outline,
+                    size: 14,
+                    color: Color(0xFF4A5565),
                   ),
+                  const SizedBox(width: 4),
+                  Text(
+                    assignee,
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                  if (overdue.isNotEmpty) ...[
+                    const SizedBox(width: 12),
+                    _buildOverdueChip(),
+                  ],
+                ],
+              ),
+              // Overdue indicator on the right (as per screenshot)
+              if (overdue.isNotEmpty)
+                const Text(
+                  '▲ Overdue',
+                  style: TextStyle(fontSize: 13, color: Color(0xFFDC2626)),
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Progress Row (Time Text vs. Percentage Text)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Progress Time Text (e.g., "2.5h / 4h")
+              Text(
+                progressTime,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500, // Matching screenshot style
+                ),
+              ),
+              // Percentage Text (e.g., "63%") on the right
+              Text(
+                '$percentage%',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey.shade700,
+                  fontWeight: FontWeight.w500, // Matching screenshot style
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-
-          // Progress Row
-          Row(
-            children: [
-              // Progress Bar
-              Expanded(
-                child: LinearProgressIndicator(
-                  value: progressValue,
-                  backgroundColor: Colors.grey.shade300,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    Color(0xFF1D4ED8),
-                  ), // Blue progress
-                  minHeight: 8,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Progress Text and Percentage
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    progressText,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                  ),
-                  Text(
-                    '${(progressValue * 100).toInt()}%',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          const SizedBox(height: 6), // Reduced space
+          // Progress Bar
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: progressValue,
+              backgroundColor: Colors.grey.shade300,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFF1D4ED8),
+              ), // Blue progress
+              minHeight: 8,
+            ),
           ),
         ],
       ),
     );
   }
 }
-
 // ....................................Active Task Dialouge box ends. .............................
 
 // --- Hours Logged  DIALOG WIDGET --- Starts
-
-// --- DATA MODELS ---
 
 class OverviewData {
   final String value;
@@ -680,12 +719,11 @@ class TimeEntry {
 // --- HOURS LOGGED DIALOG WIDGET ---
 
 class HoursLoggedDialog extends StatelessWidget {
-  HoursLoggedDialog({super.key});
+  final bool isMobile;
+  HoursLoggedDialog({super.key, required this.isMobile});
+  // HoursLoggedDialog({super.key});
 
-  // Sample data for the overview cards
   final List<OverviewData> overviewData = [
-    // Note: The colors here are based on the first screenshot's color scheme for consistency
-    // The "Total Active" number 42.2 seems unusual for a count, but we keep it as per image.
     OverviewData(
       value: '42.2',
       label: 'Total Active',
@@ -700,7 +738,6 @@ class HoursLoggedDialog extends StatelessWidget {
     ),
   ];
 
-  // Sample data for the daily breakdown
   final List<DailyBreakdownEntry> dailyBreakdown = [
     DailyBreakdownEntry(day: 'Tuesday', taskCount: 3, hours: 8.3),
     DailyBreakdownEntry(day: 'Tuesday', taskCount: 3, hours: 8.3),
@@ -708,7 +745,6 @@ class HoursLoggedDialog extends StatelessWidget {
     DailyBreakdownEntry(day: 'Wednesday', taskCount: 2, hours: 4.5),
   ];
 
-  // Sample data for recent time entries
   final List<TimeEntry> recentEntries = [
     TimeEntry(
       taskTitle: 'GSTR-1 Filing for Acme Corp',
@@ -736,19 +772,17 @@ class HoursLoggedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      // Use Card for elevation and styling
       child: Card(
+        color: Color(0xFFFFFFFF),
         elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        margin: EdgeInsets.zero, // Remove default dialog margin
+        margin: EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header
             _buildHeader(context),
 
-            // Content wrapped in SingleChildScrollView
             Flexible(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
@@ -758,17 +792,13 @@ class HoursLoggedDialog extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Overview Cards Section
                     _buildOverviewSection(context),
-                    const Divider(height: 25, thickness: 1, color: Colors.grey),
-
-                    // Daily Breakdown Section
+                    SizedBox(height: 20),
                     _buildDailyBreakdownSection(),
-                    const Divider(height: 25, thickness: 1, color: Colors.grey),
 
                     // Recent Time Entries Section
                     _buildRecentTimeEntriesSection(),
-                    const SizedBox(height: 10), // Space before footer
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -881,9 +911,7 @@ class HoursLoggedDialog extends StatelessWidget {
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 15),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                8.0,
-              ), // Rounded corners for button
+              borderRadius: BorderRadius.circular(8.0),
             ),
             elevation: 2,
           ),
@@ -891,7 +919,7 @@ class HoursLoggedDialog extends StatelessWidget {
             'Close',
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: context.scaleFont(14),
+              // fontSize: context.scaleFont(14),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -913,9 +941,9 @@ class _OverviewCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(color: Colors.grey.shade300, width: 1),
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(8),
+        // border: Border.all(color: Colors.grey.shade300, width: 1),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -923,6 +951,7 @@ class _OverviewCard extends StatelessWidget {
           Text(
             data.value,
             style: TextStyle(
+              fontFamily: 'Inter',
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: data.color,
@@ -933,6 +962,7 @@ class _OverviewCard extends StatelessWidget {
             data.label,
             textAlign: TextAlign.center,
             style: const TextStyle(
+              fontFamily: 'Inter',
               fontSize: 13,
               color: Colors.black54,
               fontWeight: FontWeight.w500,
@@ -950,7 +980,6 @@ class _DailyBreakdownItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine the progress value for the bar (assuming max 8 hours for a daily entry)
     final double progressValue = entry.hours / 8.0;
 
     return Padding(
@@ -1370,7 +1399,7 @@ class OverdueTasksDetailsContent extends StatelessWidget {
             'Close',
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: context.scaleFont(14),
+              // fontSize: context.scaleFont(14),
               fontWeight: FontWeight.w500,
             ),
           ),

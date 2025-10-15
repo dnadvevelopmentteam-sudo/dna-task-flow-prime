@@ -88,7 +88,6 @@ Widget buildLeaderboardSection() {
     children: [
       Container(
         width: double.infinity,
-        constraints: const BoxConstraints(maxWidth: 1250),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color(0xFFFFFFFF),
@@ -143,7 +142,6 @@ Widget _buildViewAllMetrics() {
 Widget _chartCard(String title, Widget content, {Widget? headerActions}) {
   return Container(
     padding: const EdgeInsets.all(20),
-    constraints: const BoxConstraints(maxWidth: 1250),
     decoration: BoxDecoration(
       color: const Color(0xFFFFFFFF),
       borderRadius: BorderRadius.circular(12),

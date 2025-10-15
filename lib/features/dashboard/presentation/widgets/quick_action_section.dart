@@ -1,14 +1,12 @@
+import 'package:dna_taskflow_prime/core/enums/quick_action_enum.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/action_button.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/dashboard_section.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/service_request_form.dart';
-import 'package:dna_taskflow_prime/features/tasks/presentation/pages/tasks_page.dart';
-import 'package:dna_taskflow_prime/features/team/presentation/widgets/analytics_content.dart';
-import 'package:dna_taskflow_prime/features/timesheet-team/presentation/pages/timesheet_team_page.dart';
 import 'package:flutter/material.dart';
 
 class QuickActionsSection extends StatelessWidget {
-  const QuickActionsSection({super.key});
-
+  const QuickActionsSection({super.key, required this.onTap});
+  final Function(QuickActionEnum) onTap;
   void _showServiceRequestDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -28,52 +26,46 @@ class QuickActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DashboardSection(
-      title: 'Quick Actions',
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 9.0),
-        child: Column(
-          children: <Widget>[
-            ActionButton(
-              title: 'Log Time Entry',
-              icon: Icons.calendar_today_outlined,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TimesheetTeamPage()),
-                );
-              },
-            ),
-            const SizedBox(height: 8),
-            ActionButton(
-              title: 'View Team Tasks',
-              icon: Icons.group_outlined,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TasksPage()),
-                );
-              },
-            ),
-            const SizedBox(height: 8),
-            ActionButton(
-              title: 'Weekly Report',
-              icon: Icons.auto_graph_outlined,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AnalyticsContent()),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            ActionButton(
-              title: 'Raise Service Request',
-              icon: Icons.headphones_outlined,
-              isPrimary: true,
-              onTap: () => _showServiceRequestDialog(context),
-            ),
-          ],
+    return SizedBox(
+      height: 300,
+      child: DashboardSection(
+        title: 'Quick Actions',
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            children: <Widget>[
+              ActionButton(
+                title: 'Log Time Entry',
+                icon: Icons.calendar_today_outlined,
+                onTap: () {
+                  onTap(QuickActionEnum.log_entry);
+                },
+              ),
+              const SizedBox(height: 8),
+              ActionButton(
+                title: 'View Team Tasks',
+                icon: Icons.group_outlined,
+                onTap: () {
+                  onTap(QuickActionEnum.view_team_tasks);
+                },
+              ),
+              const SizedBox(height: 8),
+              ActionButton(
+                title: 'Weekly Report',
+                icon: Icons.auto_graph_outlined,
+                onTap: () {
+                  onTap(QuickActionEnum.weelkly_report);
+                },
+              ),
+              const SizedBox(height: 16),
+              ActionButton(
+                title: 'Raise Service Request',
+                icon: Icons.headphones_outlined,
+                isPrimary: true,
+                onTap: () => _showServiceRequestDialog(context),
+              ),
+            ],
+          ),
         ),
       ),
     );
