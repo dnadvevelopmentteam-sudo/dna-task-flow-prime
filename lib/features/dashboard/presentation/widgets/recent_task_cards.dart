@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'tasks_details_dialog_content.dart';
+
 class ClickableChip extends StatelessWidget {
   final String text;
   final Color backgroundColor;
@@ -101,20 +103,23 @@ class RecentTaskCard extends StatelessWidget {
   }
 
   void _showTaskDetails(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('${data['title']} Details'),
-        content: const Text(
-          'This is the task detail popup, triggered by clicking the card.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: isMobile ? screenWidth * 0.95 : 900,
+              maxHeight: MediaQuery.of(context).size.height * 3.00,
+            ),
+            child: TaskDetailsModalContainer(isMobile: isMobile),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -127,6 +132,7 @@ class RecentTaskCard extends StatelessWidget {
     );
 
     return Card(
+      color: Color(0xFFFFFFFF),
       elevation: 0,
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
       shape: RoundedRectangleBorder(
