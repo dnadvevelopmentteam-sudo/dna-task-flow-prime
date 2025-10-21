@@ -45,7 +45,6 @@ final List<Client> sampleClients = [
     services: ['GST Filing', 'TDS', 'Payroll'],
     isActive: true,
   ),
-  // ... more clients
 ];
 
 class ClientsPage extends StatelessWidget {
@@ -53,7 +52,6 @@ class ClientsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine if we are on a small screen (e.g., mobile)
     final isSmallScreen = MediaQuery.of(context).size.width < 1000;
     final gridCrossAxisCount = isSmallScreen ? 1 : 4;
     final clientCardWidth = isSmallScreen ? double.infinity : 350.0;

@@ -20,7 +20,7 @@ class ClientsGrid extends StatelessWidget {
       spacing: 20.0,
       runSpacing: 20.0,
       children: clients
-          .map((client) => ClientCard(client: client, width: cardWidth))
+          .map((client) => ClientCard(client: client, width: 610))
           .toList(),
     );
   }

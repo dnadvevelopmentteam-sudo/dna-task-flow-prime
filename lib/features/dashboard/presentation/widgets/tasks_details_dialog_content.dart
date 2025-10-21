@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'edit_tasks_dialog.dart';
+import 'reassign_tasks_dialog.dart';
 
 // --- Reusable Theming ---
 const Color _primaryBlue = Color(0xFF007bff);
@@ -799,6 +800,12 @@ class _TaskActionButtons extends StatelessWidget {
       showDialog(
         context: context,
         builder: (BuildContext context) => const EditTaskModal(),
+      );
+    } else if (action == 'Reassign') {
+      // **Open the complex Edit Task Modal**
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const ReassignTaskModal(),
       );
     } else {
       // **Open a simple placeholder dialog for other buttons**

@@ -6,6 +6,8 @@ import 'package:dna_taskflow_prime/features/notices/presentation/widgets/archive
 import 'package:dna_taskflow_prime/features/notices/presentation/widgets/drafts_tab_content.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/colors.dart';
+
 class AppColorss {
   static const Color primary = Color(0xFF1976D2);
   static const Color background = Color(0xFFF7F7F7);
@@ -81,7 +83,7 @@ class NoticeBoardScreen extends StatelessWidget {
           toolbarHeight: 0,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -100,12 +102,29 @@ class NoticeBoardScreen extends StatelessWidget {
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 10,
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
                         filled: true,
                         fillColor: AppColorss.cardBackground,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFD9D9D9),
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 2.0,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -130,56 +149,58 @@ class NoticeBoardScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
+              SizedBox(
+                width: 350,
+                child: Container(
+                  height: 48,
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: AppColorss.textLight.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TabBar(
+                    isScrollable: false,
+                    indicatorColor: Colors.transparent,
+                    indicatorSize: TabBarIndicatorSize.tab,
 
-              Container(
-                height: 48,
-                padding: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                  color: AppColorss.textLight.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TabBar(
-                  isScrollable: false,
-                  indicatorColor: Colors.transparent,
-                  indicatorSize: TabBarIndicatorSize.tab,
+                    indicator: BoxDecoration(
+                      color: AppColorss.cardBackground,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColorss.textLight.withOpacity(0.2),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
 
-                  indicator: BoxDecoration(
-                    color: AppColorss.cardBackground,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColorss.textLight.withOpacity(0.2),
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
+                    labelColor: AppColorss.textDark,
+                    labelStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                    unselectedLabelColor: AppColorss.textDark.withOpacity(0.7),
+                    unselectedLabelStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
+
+                    tabs: const [
+                      Tab(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.notifications_none, size: 20),
+                            SizedBox(width: 8),
+                            Text('Active (8)'),
+                          ],
+                        ),
                       ),
+                      Tab(text: 'Drafts (0)'),
+                      Tab(text: 'Archived (0)'),
                     ],
                   ),
-
-                  labelColor: AppColorss.textDark,
-                  unselectedLabelColor: AppColorss.textDark.withOpacity(0.7),
-                  labelStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  unselectedLabelStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                  ),
-
-                  tabs: const [
-                    Tab(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.notifications_none, size: 20),
-                          SizedBox(width: 8),
-                          Text('Active (8)'),
-                        ],
-                      ),
-                    ),
-                    Tab(text: 'Drafts (0)'),
-                    Tab(text: 'Archived (0)'),
-                  ],
                 ),
               ),
               const SizedBox(height: 20),

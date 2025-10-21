@@ -66,7 +66,7 @@ class ClientsHeader extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(Icons.add, size: 16),
               label: Text(
-                'New Client',
+                'Add Client',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,

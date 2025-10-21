@@ -113,7 +113,7 @@ class RecentTaskCard extends StatelessWidget {
         return Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: isMobile ? screenWidth * 0.95 : 900,
+              // maxWidth: isMobile ? screenWidth * 0.95 : 900,
               maxHeight: MediaQuery.of(context).size.height * 3.00,
             ),
             child: TaskDetailsModalContainer(isMobile: isMobile),

@@ -18,28 +18,28 @@ class _AssigneeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-      child: Row(
-        children: [
-          // Avatar (Circle with initials)
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: roleColor.withOpacity(
-              0.2,
-            ), // Light background based on role
-            child: Text(
-              initials,
-              style: TextStyle(
-                color: roleColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
+    return Row(
+      // Ensure the row spans the width given by its parent (ListTile)
+      children: [
+        // Avatar (Circle with initials)
+        CircleAvatar(
+          radius: 18,
+          backgroundColor: roleColor.withOpacity(
+            0.2,
+          ), // Light background based on role
+          child: Text(
+            initials,
+            style: TextStyle(
+              color: roleColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
             ),
           ),
-          const SizedBox(width: 12),
-          // Name and Role
-          Column(
+        ),
+        const SizedBox(width: 12),
+        // Name and Role
+        Expanded(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -49,9 +49,12 @@ class _AssigneeOption extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
+                overflow: TextOverflow
+                    .ellipsis, // Added to prevent overflow on long names
               ),
               Row(
                 children: [
+                  // Role Text
                   Text(
                     role,
                     style: TextStyle(
@@ -85,22 +88,23 @@ class _AssigneeOption extends StatelessWidget {
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 // --- The Stateful Reassign Task Modal ---
-class _ReassignTaskModal extends StatefulWidget {
-  const _ReassignTaskModal();
+class ReassignTaskModal extends StatefulWidget {
+  const ReassignTaskModal({super.key});
   @override
-  State<_ReassignTaskModal> createState() => _ReassignTaskModalState();
+  State<ReassignTaskModal> createState() => ReassignTaskModalState();
 }
 
-class _ReassignTaskModalState extends State<_ReassignTaskModal> {
+class ReassignTaskModalState extends State<ReassignTaskModal> {
   // Define a simple structure for user data
   final List<Map<String, dynamic>> _assignees = const [
+    // ... (Your assignee data remains the same)
     {
       'id': 1,
       'name': 'Arjun Mehta',
@@ -163,162 +167,171 @@ class _ReassignTaskModalState extends State<_ReassignTaskModal> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    // Set a practical max width for the modal on large screens
+    final double maxWidth = screenWidth > 600 ? 400.0 : screenWidth * 0.9;
+
     // Determine the blue color for the button/selection
     const Color primaryBlue = Color(0xFF007bff);
-    const Color borderColor = Color(0xFFDDDDDD);
 
-    return AlertDialog(
-      titlePadding: EdgeInsets.zero,
-      contentPadding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      // constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: AlertDialog(
+        titlePadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
 
-      // Modal Header
-      title: Container(
-        padding: const EdgeInsets.fromLTRB(20, 15, 10, 15),
-        decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
+        // Modal Header
+        title: Container(
+          padding: const EdgeInsets.fromLTRB(20, 15, 10, 15),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Reassign Task',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close, size: 20),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+        // Modal Content (Assignee List)
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // Remove mainAxisSize: MainAxisSize.min for better flexible behavior
           children: [
-            const Text(
-              'Reassign Task',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // Select Assignees Label
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 10.0),
+              child: Text(
+                'Select Assignee', // Changed to singular for radio buttons
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF424242),
+                ),
+              ),
             ),
-            IconButton(
-              icon: const Icon(Icons.close, size: 20),
-              onPressed: () => Navigator.of(context).pop(),
+
+            // List of Assignees - WRAPPED IN FLEXIBLE
+            // This is the key change for layout stability and flexibility
+            Flexible(
+              // Max height is 40% of screen height, but will shrink if less than 7 items.
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.sizeOf(context).height * 0.4,
+                ),
+                child: ListView.builder(
+                  shrinkWrap:
+                      true, // List will only take the space it needs up to maxHeight
+                  itemCount: _assignees.length,
+                  itemBuilder: (context, index) {
+                    final user = _assignees[index];
+                    final bool isSelected = user['id'] == _selectedAssigneeId;
+
+                    return ListTile(
+                      // Use ListTile for better look and tap effect
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _selectedAssigneeId = user['id'];
+                        });
+                      },
+
+                      // Radio Button
+                      leading: Radio<int>(
+                        value: user['id'],
+                        groupValue: _selectedAssigneeId,
+                        onChanged: (int? id) {
+                          setState(() {
+                            _selectedAssigneeId = id;
+                          });
+                        },
+                        activeColor: primaryBlue,
+                        fillColor: WidgetStateProperty.resolveWith<Color>((
+                          Set<WidgetState> states,
+                        ) {
+                          if (states.contains(WidgetState.selected)) {
+                            return primaryBlue;
+                          }
+                          return Colors.grey;
+                        }),
+                      ),
+
+                      // Assignee Info as the ListTile title
+                      title: _AssigneeOption(
+                        initials: user['initials'],
+                        name: user['name'],
+                        role: user['role'],
+                        roleTag: user['role_tag'],
+                        roleColor: user['role_color'],
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),
-      ),
 
-      // Modal Content (Assignee List)
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Select Assignees Label
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 10.0),
-            child: Text(
-              'Select Assignees',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF424242),
-              ),
-            ),
-          ),
-
-          // List of Assignees
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: _assignees.length,
-              itemBuilder: (context, index) {
-                final user = _assignees[index];
-                final bool isSelected = user['id'] == _selectedAssigneeId;
-
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      _selectedAssigneeId = user['id'];
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(
-                      children: [
-                        // Custom Radio Button (or use Flutter's Radio)
-                        Radio<int>(
-                          value: user['id'],
-                          groupValue: _selectedAssigneeId,
-                          onChanged: (int? id) {
-                            setState(() {
-                              _selectedAssigneeId = id;
-                            });
-                          },
-                          activeColor: primaryBlue,
-                          fillColor: WidgetStateProperty.resolveWith<Color>((
-                            Set<WidgetState> states,
-                          ) {
-                            if (states.contains(WidgetState.selected)) {
-                              return primaryBlue;
-                            }
-                            return Colors.grey;
-                          }),
-                        ),
-
-                        // Assignee Info
-                        Expanded(
-                          child: _AssigneeOption(
-                            initials: user['initials'],
-                            name: user['name'],
-                            role: user['role'],
-                            roleTag: user['role_tag'],
-                            roleColor: user['role_color'],
-                          ),
-                        ),
-                      ],
-                    ),
+        // Action Buttons
+        actionsPadding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlinedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
                   ),
-                );
-              },
-            ),
+                  side: const BorderSide(color: Color(0xFFDDDDDD)),
+                ),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.black54),
+                ),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: _selectedAssigneeId != null
+                    ? () {
+                        // Log the reassignment action
+                        final selectedUser = _assignees.firstWhere(
+                          (u) => u['id'] == _selectedAssigneeId,
+                        );
+                        print('Task Reassigned to: ${selectedUser['name']}');
+                        Navigator.of(context).pop();
+                      }
+                    : null, // Button is disabled if no assignee is selected
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryBlue,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  'Reassign Task',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
           ),
         ],
       ),
-
-      // Action Buttons
-      actionsPadding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                side: const BorderSide(color: borderColor),
-              ),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.black54),
-              ),
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: _selectedAssigneeId != null
-                  ? () {
-                      // Log the reassignment action
-                      final selectedUser = _assignees.firstWhere(
-                        (u) => u['id'] == _selectedAssigneeId,
-                      );
-                      print('Task Reassigned to: ${selectedUser['name']}');
-                      Navigator.of(context).pop();
-                    }
-                  : null, // Button is disabled if no assignee is selected
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryBlue,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                elevation: 0,
-              ),
-              child: const Text(
-                'Reassign Task',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
