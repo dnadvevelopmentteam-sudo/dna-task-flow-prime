@@ -517,10 +517,6 @@ class DueDateTimeButtonState extends State<DueDateTimeButton> {
   }
 }
 
-// =========================================================================
-// ========================= 2. UI FOR THE MAIN SCREEN =======================
-// =========================================================================
-
 // --- 2.1 Helper Widget for the Breadcrumb Navigation ---
 class _TaskBreadcrumb extends StatelessWidget {
   const _TaskBreadcrumb();

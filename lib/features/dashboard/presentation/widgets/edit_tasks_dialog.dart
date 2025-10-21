@@ -16,7 +16,6 @@ class EditTaskModal extends StatefulWidget {
 }
 
 class EditTaskModalState extends State<EditTaskModal> {
-  // --- Tag Management State (Same as before) ---
   final List<String> _selectedTags = [];
   final List<String> _quickTags = [
     'Income Tax',
@@ -55,7 +54,6 @@ class EditTaskModalState extends State<EditTaskModal> {
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
 
-      // constraints: const BoxConstraints(maxWidth: 550),
       title: Container(
         padding: const EdgeInsets.fromLTRB(20, 15, 10, 15),
         decoration: BoxDecoration(
@@ -83,7 +81,6 @@ class EditTaskModalState extends State<EditTaskModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // --- Task Title ---
             const InputFocusField(
               label: 'Task Title',
               initialValue: 'Income Tax Return - Q2 Review',
@@ -91,7 +88,6 @@ class EditTaskModalState extends State<EditTaskModal> {
             ),
             const SizedBox(height: 15),
 
-            // --- Description ---
             const Text(
               'Description',
               style: TextStyle(fontWeight: FontWeight.w500, color: _darkGrey),
@@ -103,7 +99,6 @@ class EditTaskModalState extends State<EditTaskModal> {
             ),
             const SizedBox(height: 20),
 
-            // --- Client Dropdown ---
             const CustomDropdown(
               label: 'Client',
               currentValue: 'ABC Corp (ABC)',
@@ -111,7 +106,6 @@ class EditTaskModalState extends State<EditTaskModal> {
             ),
             const SizedBox(height: 20),
 
-            // --- Priority & Estimated Hours Row ---
             Row(
               children: [
                 Expanded(
@@ -132,14 +126,12 @@ class EditTaskModalState extends State<EditTaskModal> {
             ),
             const SizedBox(height: 20),
 
-            // --- Due Date & Time (NEW WIDGET) ---
             const DueDateTimeButton(
               label: 'Due Date & Time',
               initialDateTime: 'August 22nd, 2024 at 05:30',
             ),
             const SizedBox(height: 20),
 
-            // --- Selected Tags ---
             const Text(
               'Tags',
               style: TextStyle(fontWeight: FontWeight.w500, color: _darkGrey),
@@ -175,7 +167,6 @@ class EditTaskModalState extends State<EditTaskModal> {
             ),
             const SizedBox(height: 20),
 
-            // --- Quick Add Tags ---
             const Text(
               'Quick Add Tags',
               style: TextStyle(fontWeight: FontWeight.w500, color: _darkGrey),
@@ -190,7 +181,6 @@ class EditTaskModalState extends State<EditTaskModal> {
             ),
             const SizedBox(height: 20),
 
-            // --- Add Custom Tag ---
             const Text(
               'Add Custom Tag:',
               style: TextStyle(fontWeight: FontWeight.w500, color: _darkGrey),
@@ -202,7 +192,6 @@ class EditTaskModalState extends State<EditTaskModal> {
         ),
       ),
 
-      // --- Action Buttons ---
       actionsPadding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
       actions: [
         Row(
@@ -225,7 +214,6 @@ class EditTaskModalState extends State<EditTaskModal> {
             const SizedBox(width: 10),
             ElevatedButton(
               onPressed: () {
-                // Handle saving changes
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
