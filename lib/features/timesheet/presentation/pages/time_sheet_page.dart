@@ -4,20 +4,14 @@ import 'package:flutter/material.dart';
 
 enum SettingsTab { day_view, week_view, month_view }
 
-// --- CONSTANTS COLORS ---
-const Color kPrimaryBlue = Color(
-  0xFF007bff,
-); // For borders, text, and active states
-const Color kAccentGreen = Color(0xFF4CAF50); // For dropdown hover/selection
+const Color kPrimaryBlue = Color(0xFF007bff);
+const Color kAccentGreen = Color(0xFF4CAF50);
 const Color kLightGray = Color(0xFFF7F7F7);
 const Color kBorderColor = Color(0xFFD6D6D6);
 const Color kWarningYellow = Color(0xFFFFF3CD);
 const Color kWarningOrange = Color(0xFFFEE8D3);
 const double kBorderRadius = 6.0;
 
-// --- SHARED WIDGETS ---
-
-/// 1, 4, 5, 8: Handles hover states for buttons, changing BG, border, text, and icon colors.
 class InteractiveButton extends StatefulWidget {
   final String text;
   final IconData? icon;
@@ -25,15 +19,15 @@ class InteractiveButton extends StatefulWidget {
   final Color baseColor;
   final Color hoverColor;
   final VoidCallback? onTap;
-  final bool compact; // For quick filters vs main buttons
+  final bool compact;
 
   const InteractiveButton({
     super.key,
     required this.text,
     this.icon,
     this.isSelected = false,
-    this.baseColor = Colors.black87, // Default text color
-    this.hoverColor = kPrimaryBlue, // Default hover color
+    this.baseColor = Colors.black87,
+    this.hoverColor = kPrimaryBlue,
     this.onTap,
     this.compact = false,
   });
@@ -55,11 +49,9 @@ class _InteractiveButtonState extends State<InteractiveButton> {
   Widget build(BuildContext context) {
     final bool isActive = widget.isSelected || _isHovering;
 
-    // Logic for selected state (solid fill) vs hover state (light background/outline)
     final Color effectiveBgColor = widget.isSelected
         ? widget.hoverColor
-        : (widget.compact &&
-                  _isHovering // Compact filters have a light hover
+        : (widget.compact && _isHovering
               ? widget.hoverColor.withOpacity(0.1)
               : (_isHovering
                     ? widget.hoverColor.withOpacity(0.1)
@@ -68,8 +60,6 @@ class _InteractiveButtonState extends State<InteractiveButton> {
     final Color effectiveBorderColor = isActive
         ? widget.hoverColor
         : kBorderColor;
-
-    // Text and Icon color is white when selected, hoverColor when hovering/active, and baseColor otherwise
     final Color effectiveColor = widget.isSelected
         ? Colors.white
         : (isActive ? widget.hoverColor : widget.baseColor);
@@ -111,12 +101,11 @@ class _InteractiveButtonState extends State<InteractiveButton> {
   }
 }
 
-/// 2: Handles search input focus state (blue border on click/focus).
 class SearchInput extends StatefulWidget {
   final String hintText;
   final double width;
 
-  const SearchInput({super.key, required this.hintText, this.width = 400});
+  const SearchInput({super.key, required this.hintText, this.width = 00});
 
   @override
   State<SearchInput> createState() => _SearchInputState();
@@ -128,8 +117,6 @@ class _SearchInputState extends State<SearchInput> {
   @override
   void initState() {
     super.initState();
-    // No need to listen to focus changes here, as TextFormField's focusedBorder handles it
-    // But keeping for general state management principle if custom logic were needed
   }
 
   @override
@@ -141,6 +128,7 @@ class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: 100,
       width: widget.width,
       constraints: BoxConstraints(maxWidth: widget.width),
       child: TextFormField(
@@ -164,7 +152,6 @@ class _SearchInputState extends State<SearchInput> {
             borderRadius: BorderRadius.circular(kBorderRadius),
             borderSide: const BorderSide(color: kBorderColor),
           ),
-          // Blue border on focus
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(kBorderRadius),
             borderSide: const BorderSide(color: kPrimaryBlue, width: 2),
@@ -175,7 +162,6 @@ class _SearchInputState extends State<SearchInput> {
   }
 }
 
-/// Helper widget for the dropdown menu item hover effect (3, 7)
 class DropdownItem extends StatefulWidget {
   final String text;
   const DropdownItem({super.key, required this.text});
@@ -195,17 +181,13 @@ class _DropdownItemState extends State<DropdownItem> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
-          color: _isHovering
-              ? kAccentGreen
-              : Colors.transparent, // Green on hover
+          color: _isHovering ? kAccentGreen : Colors.transparent,
           borderRadius: BorderRadius.circular(4),
         ),
         child: Text(
           widget.text,
           style: TextStyle(
-            color: _isHovering
-                ? Colors.white
-                : Colors.black87, // White text on hover
+            color: _isHovering ? Colors.white : Colors.black87,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -214,7 +196,6 @@ class _DropdownItemState extends State<DropdownItem> {
   }
 }
 
-/// 3, 7: Simulates a custom dropdown/popup with interactive items.
 class InteractiveDropdown extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -233,25 +214,20 @@ class InteractiveDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // PopupMenuButton is tricky to style the *open* state border blue easily.
-    // For this demonstration, we focus on the content and item styling.
     return Container(
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(kBorderRadius),
-        border: Border.all(color: kBorderColor), // Base border
+        border: Border.all(color: kBorderColor),
       ),
       child: PopupMenuButton<String>(
         initialValue: currentValue,
         onSelected: onChanged,
-        // Custom style to remove default padding and background
         padding: EdgeInsets.zero,
         surfaceTintColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadius),
-          side: const BorderSide(
-            color: kPrimaryBlue,
-          ), // Simulate blue border when open
+          side: const BorderSide(color: kPrimaryBlue),
         ),
         itemBuilder: (BuildContext context) {
           return options.map((String choice) {
@@ -268,7 +244,7 @@ class InteractiveDropdown extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: 18, color: Colors.black87),
-              const SizedBox(width: 6),
+              const SizedBox(width: 4),
               Text(
                 currentValue,
                 style: const TextStyle(
@@ -290,7 +266,6 @@ class InteractiveDropdown extends StatelessWidget {
   }
 }
 
-/// Simplified Tag widget for status, coverage, entry method labels
 class Tag extends StatelessWidget {
   final String text;
   final Color color;
@@ -322,8 +297,6 @@ class Tag extends StatelessWidget {
     );
   }
 }
-
-// --- ENTRY CARD WIDGET (Screenshot 2) ---
 
 class TimesheetEntryCard extends StatelessWidget {
   final String title;
@@ -363,7 +336,6 @@ class TimesheetEntryCard extends StatelessWidget {
           style: TextStyle(color: Colors.black87, fontSize: 13),
         ),
         SizedBox(width: 20),
-        // Coverage
         Icon(Icons.check_circle_outline, size: 16, color: kAccentGreen),
         SizedBox(width: 4),
         Text(
@@ -375,17 +347,14 @@ class TimesheetEntryCard extends StatelessWidget {
           ),
         ),
         SizedBox(width: 20),
-        // Est. Time
         Text(
           'Est: $estTime',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         SizedBox(width: 10),
-        // Variance (Red tag if variance exists)
         if (variance.isNotEmpty)
           Tag(text: variance, color: Colors.white, bgColor: Colors.red[600]!),
         SizedBox(width: 20),
-        // Entry Method
         Text(
           entryMethod,
           style: TextStyle(color: Colors.black54, fontSize: 13),
@@ -546,7 +515,6 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
     'By Task',
   ];
 
-  // Helper function to build the view tabs for cleaner code (6)
   Widget _buildTabBar() {
     return Container(
       decoration: BoxDecoration(
@@ -602,17 +570,14 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
 
   @override
   Widget build(BuildContext context) {
-    // The main body now directly contains the timesheet content, full width.
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
-      // AppBar is removed
+
       body: SingleChildScrollView(
-        // The main content takes the full body area
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // --- Main Content Header ---
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -636,7 +601,6 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
                 ),
                 Row(
                   children: [
-                    // 1. Bulk Import Button
                     InteractiveButton(
                       text: 'Bulk Import',
                       icon: Icons.upload_file,
@@ -681,10 +645,9 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
               spacing: 12,
               runSpacing: 12,
               children: [
-                // 2. Main Search Bar
                 const SearchInput(
                   hintText: 'Search tasks, clients, remarks...',
-                  width: 400,
+                  width: 652,
                 ),
 
                 // 3. Dropdowns (Today, All Clients, All Tasks, All Status)

@@ -135,17 +135,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 12,
-                child: Text(
-                  'd',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: context.scaleFont(16),
-                  ),
-                ),
-              ),
+              Image.asset('assets/appbar_logo.png', width: 32, height: 32),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -413,7 +403,6 @@ class MainDashboardContent extends StatelessWidget {
               ],
             ),
 
-          // ),
           const SizedBox(height: 30),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

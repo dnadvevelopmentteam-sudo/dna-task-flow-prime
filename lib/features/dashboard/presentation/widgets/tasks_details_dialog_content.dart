@@ -1239,33 +1239,6 @@ class TaskDetailsModalContainer extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  Widget _buildBackLink(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _handleClose(context),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.arrow_back, size: 16, color: Colors.white),
-              const SizedBox(width: 8),
-              Text(
-                'Back to Dashboard',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -1278,7 +1251,6 @@ class TaskDetailsModalContainer extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildBackLink(context),
         Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(

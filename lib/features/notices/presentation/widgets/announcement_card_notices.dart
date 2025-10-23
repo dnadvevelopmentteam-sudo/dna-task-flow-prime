@@ -18,8 +18,12 @@ class AnnouncementCardNotices extends StatelessWidget {
         : Icons.info_outline;
 
     return Card(
+      color: Colors.white,
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Color(0xFFD9D9D9), width: 1.0),
+      ),
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -89,11 +93,7 @@ class AnnouncementCardNotices extends StatelessWidget {
                     fontSize: 13,
                   ),
                 ),
-                MarkAsReadButton(
-                  onPressed: () {
-                    print('Marking notice ${notice.id} as read.');
-                  },
-                ),
+                MarkAsReadButton(onPressed: () {}),
               ],
             ),
           ],

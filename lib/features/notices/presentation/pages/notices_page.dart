@@ -77,11 +77,7 @@ class NoticeBoardScreen extends StatelessWidget {
       length: tabCount,
       child: Scaffold(
         backgroundColor: Color(0xFFFFFFFF),
-        appBar: AppBar(
-          // backgroundColor: Color(0xFFFFFFFF),
-          // elevation: 0.0,
-          toolbarHeight: 0,
-        ),
+
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           child: Column(
@@ -149,60 +145,61 @@ class NoticeBoardScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              SizedBox(
-                width: 350,
-                child: Container(
-                  height: 48,
-                  padding: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    color: AppColorss.textLight.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TabBar(
-                    isScrollable: false,
-                    indicatorColor: Colors.transparent,
-                    indicatorSize: TabBarIndicatorSize.tab,
-
-                    indicator: BoxDecoration(
-                      color: AppColorss.cardBackground,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColorss.textLight.withOpacity(0.2),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-
-                    labelColor: AppColorss.textDark,
-                    labelStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                    unselectedLabelColor: AppColorss.textDark.withOpacity(0.7),
-                    unselectedLabelStyle: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-
-                    tabs: const [
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.notifications_none, size: 20),
-                            SizedBox(width: 8),
-                            Text('Active (8)'),
-                          ],
-                        ),
+              Container(
+                height: 48,
+                width: 356,
+                padding: const EdgeInsets.all(2.0),
+                decoration: BoxDecoration(
+                  color: AppColorss.textLight.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TabBar(
+                  isScrollable: false,
+                  indicatorColor: Colors.transparent,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorWeight: 0,
+                  dividerHeight: 0,
+                  dividerColor: Colors.transparent,
+                  indicator: BoxDecoration(
+                    color: AppColorss.cardBackground,
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColorss.textLight.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
                       ),
-                      Tab(text: 'Drafts (0)'),
-                      Tab(text: 'Archived (0)'),
                     ],
                   ),
+
+                  labelColor: AppColorss.textDark,
+                  labelStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                  unselectedLabelColor: AppColorss.textDark.withOpacity(0.7),
+                  unselectedLabelStyle: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                  ),
+
+                  tabs: const [
+                    Tab(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.notifications_none, size: 20),
+                          SizedBox(width: 8),
+                          Text('Active (8)'),
+                        ],
+                      ),
+                    ),
+                    Tab(text: 'Drafts (0)'),
+                    Tab(text: 'Archived (0)'),
+                  ],
                 ),
               ),
+
               const SizedBox(height: 20),
 
               const Expanded(
