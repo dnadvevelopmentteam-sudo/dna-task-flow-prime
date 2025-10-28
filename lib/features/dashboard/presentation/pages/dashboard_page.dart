@@ -344,6 +344,7 @@ class MainDashboardContent extends StatelessWidget {
                 LeaderboardSection(),
                 SizedBox(height: 20),
                 QuickActionsSection(
+                  // onTap: (p0) => {},
                   onTap: (p0) {
                     switch (p0) {
                       case QuickActionEnum.log_entry:

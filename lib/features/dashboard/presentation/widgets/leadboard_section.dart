@@ -1,6 +1,9 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/dashboard_section.dart';
+import 'package:dna_taskflow_prime/features/leaderboards/presentation/pages/leader_board_page.dart';
 import 'package:flutter/material.dart';
+
+import 'points_breakdown_dialog.dart';
 
 class RankBadge extends StatelessWidget {
   final int rank;
@@ -49,6 +52,12 @@ class LeaderboardSection extends StatelessWidget {
     {'name': 'You', 'points': 156, 'isYou': true},
   ];
 
+  void _navigateToProfile(BuildContext context, String name) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Navigating to $name\'s profile...')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final sortedRankings = List<Map<String, dynamic>>.from(allRankings)
@@ -60,7 +69,6 @@ class LeaderboardSection extends StatelessWidget {
         case 1:
           return Colors.green;
         case 2:
-          return Colors.grey.shade400;
         case 3:
           return Colors.grey.shade400;
         default:
@@ -68,22 +76,18 @@ class LeaderboardSection extends StatelessWidget {
       }
     }
 
-    final topThree = sortedRankings.where((r) => !r['isYou']).take(3).toList();
     final youData = sortedRankings.firstWhere((r) => r['isYou']);
     final youRank = sortedRankings.indexOf(youData) + 1;
-
-    final displayList = [
-      ...topThree,
-      if (!topThree.any((r) => r['name'] == 'Vikram Singh') && youRank > 3)
-        sortedRankings.firstWhere((r) => r['name'] == 'Vikram Singh'),
-    ].where((r) => !r['isYou']).toList();
 
     final List<Map<String, dynamic>> visualList = [
       {'name': 'Anjali Patel', 'points': 248, 'isYou': false, 'rank': 1},
       {'name': 'Rahul Kumar', 'points': 196, 'isYou': false, 'rank': 2},
       {'name': 'Vikram Singh', 'points': 174, 'isYou': false, 'rank': 3},
-      {'name': 'You', 'points': 156, 'isYou': true, 'rank': 4},
+      {'name': 'You', 'points': 156, 'isYou': true, 'rank': youRank},
     ];
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
 
     return SizedBox(
       height: 300,
@@ -95,15 +99,22 @@ class LeaderboardSection extends StatelessWidget {
               final index = entry.key;
               final r = entry.value;
               final rank = index + 1;
+              final name = r['name'] as String;
               final color = getRankColor(rank, r['isYou'] as bool);
               final pointsColor = rank == 1
                   ? Colors.green
                   : const Color(0xFF101828);
 
               return ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LeaderBoardPage()),
+                  );
+                },
                 leading: RankBadge(rank: rank, color: color),
                 title: Text(
-                  r['name'] as String,
+                  name,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w400,
@@ -130,13 +141,28 @@ class LeaderboardSection extends StatelessWidget {
             const Divider(height: 1),
 
             ListTile(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    // return Dialog(
+                    //   child: PointsBreakdownContent(isMobile: isMobile),
+                    // );
+
+                    return AlertDialog(
+                      contentPadding: EdgeInsets.zero,
+                      content: PointsBreakdownContent(isMobile: isMobile),
+                    );
+                  },
+                );
+              },
               leading: RankBadge(
-                rank: 4,
+                rank: youRank,
                 color: Colors.blue.shade700,
                 isYou: true,
               ),
               title: Text(
-                'You',
+                youData['name'] as String,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: context.scaleFont(16),
@@ -145,7 +171,7 @@ class LeaderboardSection extends StatelessWidget {
                 ),
               ),
               trailing: Text(
-                '156 pts',
+                '${youData['points']} pts',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   color: Colors.blue.shade700,
@@ -157,7 +183,8 @@ class LeaderboardSection extends StatelessWidget {
                 horizontal: 16.0,
                 vertical: 4.0,
               ),
-              dense: true,
+              // dense: true,
+              // tileColor: Colors.blue.shade50,
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -184,12 +185,14 @@ class HoursLoggedDialog extends StatelessWidget {
           const Text(
             'Hours Logged Details',
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              fontFamily: 'Inter',
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF0A0A0A),
             ),
           ),
           IconButton(
+            iconSize: 16,
             icon: const Icon(Icons.close),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -224,9 +227,10 @@ class HoursLoggedDialog extends StatelessWidget {
           const Text(
             'Daily Breakdown - This Week',
             style: TextStyle(
+              fontFamily: 'Inter',
               fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF101828),
             ),
           ),
           const SizedBox(height: 10),
@@ -257,9 +261,10 @@ class HoursLoggedDialog extends StatelessWidget {
           const Text(
             'Recent Time Entries',
             style: TextStyle(
+              fontFamily: 'Inter',
               fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF101828),
             ),
           ),
           const SizedBox(height: 10),
@@ -327,11 +332,12 @@ class _OverviewCard extends StatelessWidget {
         children: [
           Text(
             data.value,
+            // textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: data.color,
+              fontSize: context.scaleFont(24),
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF0851B8),
             ),
           ),
           const SizedBox(height: 5),
@@ -340,9 +346,9 @@ class _OverviewCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontFamily: 'Inter',
-              fontSize: 13,
-              color: Colors.black54,
-              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              color: Color(0xFF4A5565),
+              fontWeight: FontWeight.w400,
             ),
           ),
         ],
@@ -360,7 +366,6 @@ class _DailyBreakdownItem extends StatelessWidget {
     final double progressValue = entry.hours / 8.0;
     final double clampedProgressValue = progressValue.clamp(0.0, 1.0);
 
-    const Color filledBarColor = Color(0xFF1E40AF);
     const Color trackColor = Color(0xFFE5E7EB);
 
     return Padding(
@@ -373,36 +378,55 @@ class _DailyBreakdownItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.calendar_today, size: 16, color: Colors.blueGrey),
+            const Icon(
+              Icons.calendar_today,
+              size: 16,
+              color: Color(0xFF0A0A0A),
+            ),
             const SizedBox(width: 8),
             Text(
               entry.day,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF000000),
+              ),
             ),
 
             const Spacer(),
             Text(
               '${entry.taskCount} tasks',
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF737373),
+              ),
             ),
             const SizedBox(width: 10),
 
             Text(
               '${entry.hours}h',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF737373),
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
-              flex: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: LinearProgressIndicator(
-                  value: clampedProgressValue,
-                  backgroundColor: trackColor,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    filledBarColor,
+              flex: 0,
+              child: SizedBox(
+                width: 60,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: clampedProgressValue,
+                    backgroundColor: trackColor,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      AppColors.primaryDark,
+                    ),
+                    minHeight: 9,
                   ),
-                  minHeight: 8,
                 ),
               ),
             ),
@@ -457,8 +481,10 @@ class _TimeEntryItem extends StatelessWidget {
                       Text(
                         entry.taskTitle,
                         style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          color: Color(0xFF000000),
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -469,30 +495,54 @@ class _TimeEntryItem extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(4),
+                          // color: Color(0xFFFFFFFF),
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.grey.shade200),
+                          borderRadius: BorderRadius.circular(9),
                         ),
                         child: Text(
                           entry.tag,
                           style: TextStyle(
+                            fontFamily: 'Inter',
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
-                            color: Colors.grey.shade700,
+                            color: Color(0xFF0A0A0A),
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${entry.company} • ${entry.date}',
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 10,
+                        color: Color(0xFF969696),
+                      ),
+                      children: <InlineSpan>[
+                        TextSpan(text: '${entry.company} '),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 9.0,
+                            ),
+                            child: Icon(
+                              Icons.calendar_today,
+                              size: 13,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+                        TextSpan(text: ' ${entry.date}'),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
             const SizedBox(width: 10),
-
             const Icon(
               Icons.watch_later_outlined,
               size: 20,
@@ -508,7 +558,6 @@ class _TimeEntryItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 15),
-
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -522,6 +571,7 @@ class _TimeEntryItem extends StatelessWidget {
               child: Text(
                 entry.status,
                 style: TextStyle(
+                  fontFamily: 'Inter',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: statusColor,
