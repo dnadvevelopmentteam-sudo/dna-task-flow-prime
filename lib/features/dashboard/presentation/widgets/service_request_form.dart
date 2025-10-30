@@ -162,18 +162,19 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        width: 500,
+        width: 512,
+        height: 613,
         constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              // color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          // color: Colors.black.withOpacity(0.1),
+          //   blurRadius: 10,
+          //   offset: const Offset(0, 5),
+          // ),
+          // ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -190,6 +191,7 @@ class _ServiceRequestFormState extends State<ServiceRequestForm> {
                       const Text(
                         'Raise Service Request',
                         style: TextStyle(
+                          fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),

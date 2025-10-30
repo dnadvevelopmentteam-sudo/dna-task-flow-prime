@@ -1,3 +1,4 @@
+import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class CreateAnnouncementDialog extends StatelessWidget {
@@ -7,7 +8,7 @@ class CreateAnnouncementDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       child: const AnnouncementContent(),
     );
   }
@@ -27,7 +28,8 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 450,
+      width: 512,
+      height: 574,
       constraints: const BoxConstraints(maxWidth: 500),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -38,8 +40,8 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(context),
-          const Divider(height: 1, color: Color(0xFFE0E0E0)),
 
+          // const Divider(height: 1, color: Color(0xFFE0E0E0)),
           Flexible(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
@@ -63,12 +65,14 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
                   const SizedBox(height: 16),
 
                   _buildPublishSwitch(),
+
+                  SizedBox(height: 16),
+
+                  _buildFooter(context),
                 ],
               ),
             ),
           ),
-
-          _buildFooter(context),
         ],
       ),
     );
@@ -87,9 +91,11 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
         children: [
           Text(
             'Create New Announcement',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Inter',
+              color: Color(0xFF0A0A0A),
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.grey),
@@ -107,8 +113,10 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
       child: Text(
         text,
         style: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: Colors.grey.shade700,
+          color: Color(0xFF0A0A0A),
         ),
       ),
     );
@@ -123,19 +131,24 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
 
     return InputDecoration(
       hintText: hintText,
-      hintStyle: TextStyle(color: Colors.grey.shade500),
+      hintStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+        color: Color(0xFF717182),
+      ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       suffixIcon: suffixIcon,
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4.0),
+        borderRadius: BorderRadius.circular(9.0),
         borderSide: const BorderSide(color: borderColor, width: 1.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4.0),
-        borderSide: const BorderSide(color: focusColor, width: 1.5),
+        borderRadius: BorderRadius.circular(9.0),
+        borderSide: const BorderSide(color: focusColor, width: 1.0),
       ),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4.0),
+        borderRadius: BorderRadius.circular(9.0),
         borderSide: const BorderSide(color: borderColor, width: 1.0),
       ),
       filled: true,
@@ -218,31 +231,42 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
     return Container(
       alignment: Alignment.centerRight,
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(8.0)),
-      ),
+      // decoration: BoxDecoration(
+      //   color: Colors.white,
+      //   border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      //   borderRadius: const BorderRadius.vertical(bottom: Radius.circular(8.0)),
+      // ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             style: TextButton.styleFrom(
-              foregroundColor: Colors.black87,
+              backgroundColor: const Color(0xFFF0F0F0),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: const BorderSide(color: Color(0xFFE0E0E0), width: 1.0),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              elevation: 0.0,
             ),
             child: const Text(
               'Cancel',
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 14,
+                color: Color(0xFF0A0A0A),
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           const SizedBox(width: 8),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF007BFF),
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               shape: RoundedRectangleBorder(
@@ -252,7 +276,12 @@ class _AnnouncementContentState extends State<AnnouncementContent> {
             ),
             child: const Text(
               'Create Announcement',
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 14,
+                color: Color(0xFFFFFFFF),
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

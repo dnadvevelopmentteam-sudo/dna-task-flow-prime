@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'edit_tasks_dialog.dart';
 import 'reassign_tasks_dialog.dart';
 
-// --- Reusable Theming (Adjusted Colors) ---
 const Color _primaryBlue = Color(0xFF007bff);
 const Color _lightGrey = Color(0xFFF0FFff);
 const Color _darkGrey = Color(0xFF424242);
@@ -1285,8 +1284,13 @@ class _TaskTabs extends StatelessWidget {
 class _AskAssignmentSection extends StatelessWidget {
   const _AskAssignmentSection();
 
+  void _onManageTapped(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Manage Subtasks action triggered.')),
+    );
+  }
+
   Widget _buildQuickAssignChip(String label, {required bool isSelected}) {
-    // Determine colors based on selection state
     final Color textColor = isSelected ? Colors.white : Colors.black;
     final Color iconColor = isSelected ? Colors.white : Colors.grey.shade600;
     final Color borderColor = isSelected ? _primaryBlue : Colors.grey[300]!;
@@ -1348,32 +1352,31 @@ class _AskAssignmentSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-      // --- START: Main Card Container ---
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white, // White background
-          borderRadius: BorderRadius.circular(8.0), // Rounded edges
-          border: Border.all(color: Colors.grey[300]!), // Subtle border
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.grey[300]!),
         ),
-        padding: const EdgeInsets.all(16.0), // Padding inside the card
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Row: Ask Assignment | Manage Dropdown
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Icon(
-                      Icons.filter_list, // Filter icon
+                      Icons.filter_list,
                       size: 20,
                       color: Colors.grey.shade700,
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'Ask Assignment',
+                      'Task Assignment',
                       style: TextStyle(
+                        fontFamily: 'Inter',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1385,21 +1388,24 @@ class _AskAssignmentSection extends StatelessWidget {
                     horizontal: 10,
                     vertical: 4,
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    border: Border.all(color: Colors.grey[300]!),
-                  ),
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(4.0),
+                  //   border: Border.all(color: Colors.grey[300]!),
+                  // ),
                   child: Row(
-                    children: const [
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 20,
-                        color: Colors.black,
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        'Manage',
-                        style: TextStyle(fontSize: 14, color: Colors.black),
+                    children: [
+                      // Icon(
+                      //   Icons.keyboard_arrow_down,
+                      //   size: 20,
+                      //   color: Colors.black,
+                      // ),
+                      // SizedBox(width: 4),
+                      // Text(
+                      //   'Manage',
+                      //   style: TextStyle(fontSize: 14, color: Colors.black),
+                      // ),
+                      _ManageButtonWithHover(
+                        onTap: () => _onManageTapped(context),
                       ),
                     ],
                   ),
@@ -1408,22 +1414,21 @@ class _AskAssignmentSection extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Assigned To Label
             Text(
               'Assigned To',
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              ),
             ),
             const SizedBox(height: 8),
 
-            // Assigned User Card (Inner Highlighted Row)
             Container(
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                // Use a slightly different background or subtle shade for the inner area if needed,
-                // but based on the screenshot, a simple inner highlight or default white works.
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(4.0),
-                // No inner border visible on the screenshot
               ),
               child: Row(
                 children: [
@@ -1475,7 +1480,6 @@ class _AskAssignmentSection extends StatelessWidget {
           ],
         ),
       ),
-      // --- END: Main Card Container ---
     );
   }
 }
@@ -1598,38 +1602,63 @@ class _AttachmentsSection extends StatelessWidget {
     required String date,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Row(
-        children: [
-          const Icon(Icons.picture_as_pdf, color: _primaryBlue, size: 24),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                fileName,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                  decoration: TextDecoration.underline,
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            const Icon(Icons.picture_as_pdf, color: _primaryBlue, size: 24),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  fileName,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    // decoration: TextDecoration.underline,
+                  ),
+                ),
+                Text(
+                  date,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                side: const BorderSide(color: Color(0x1A000000), width: 1.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9.0),
                 ),
               ),
-              Text(
-                date,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              child: const Text(
+                'Download',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF000000),
+                ),
               ),
-            ],
-          ),
-          const Spacer(),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Download',
-              style: TextStyle(color: _primaryBlue),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1638,39 +1667,62 @@ class _AttachmentsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Attachments (2)',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-              TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.upload_file,
-                  size: 16,
-                  color: _primaryBlue,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Attachments (2)',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
-                label: const Text(
-                  'Upload File',
-                  style: TextStyle(color: _primaryBlue),
+                TextButton.icon(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    side: const BorderSide(
+                      color: Color(0x1A000000),
+                      width: 1.0,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9.0),
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 14,
+                    color: Color(0xFF000000),
+                  ),
+                  label: const Text(
+                    'Upload File',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          _buildAttachmentItem(
-            fileName: 'GST_Return_Draft.pdf',
-            date: 'Priya Sharma • 3.4 MB • 2024-09-15',
-          ),
-          _buildAttachmentItem(
-            fileName: 'Input_Tax_Invoices.xlsx',
-            date: 'Rohit Verma • 1.2 MB • 2024-09-15',
-          ),
-        ],
+              ],
+            ),
+            _buildAttachmentItem(
+              fileName: 'GST_Return_Draft.pdf',
+              date: 'Priya Sharma • 3.4 MB • 2024-09-15',
+            ),
+            _buildAttachmentItem(
+              fileName: 'Input_Tax_Invoices.xlsx',
+              date: 'Rohit Verma • 1.2 MB • 2024-09-15',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1684,24 +1736,33 @@ class _RecentActivitySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Recent Activity',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '• Status changed to In Progress',
-            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            'Priya Sharma • 3 hours ago',
-            style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-          ),
-        ],
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Recent Activity',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '• Status changed to In Progress',
+              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              'Priya Sharma • 3 hours ago',
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+            ),
+          ],
+        ),
       ),
     );
   }
