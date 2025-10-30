@@ -5,6 +5,8 @@ import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/dashb
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/service_request_form.dart';
 import 'package:flutter/material.dart';
 
+import 'organization_analytics_screen.dart';
+
 class QuickActionsSection extends StatelessWidget {
   const QuickActionsSection({super.key, required this.onTap});
   final Function(QuickActionEnum) onTap;
@@ -42,6 +44,16 @@ class QuickActionsSection extends StatelessWidget {
     );
   }
 
+  void _weeklyReport(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return OrganizationAnalyticsDashboard();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -75,13 +87,21 @@ class QuickActionsSection extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 8),
+
+              // ActionButton(
+              //   title: 'Weekly Report',
+              //   icon: Icons.auto_graph_outlined,
+              //   onTap: () {
+              //     onTap(QuickActionEnum.weelkly_report);
+              //   },
+              // ),
               ActionButton(
                 title: 'Weekly Report',
                 icon: Icons.auto_graph_outlined,
-                onTap: () {
-                  onTap(QuickActionEnum.weelkly_report);
-                },
+                // isPrimary: true,
+                onTap: () => _weeklyReport(context),
               ),
+
               const SizedBox(height: 16),
               ActionButton(
                 title: 'Raise Service Request',

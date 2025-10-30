@@ -344,26 +344,26 @@ class MainDashboardContent extends StatelessWidget {
                 LeaderboardSection(),
                 SizedBox(height: 20),
                 QuickActionsSection(
-                  // onTap: (p0) => {},
-                  onTap: (p0) {
-                    switch (p0) {
-                      case QuickActionEnum.log_entry:
-                        BlocProvider.of<DashboardBloc>(
-                          context,
-                        ).add(TabUpdateEvent(selectedIndex: 3));
-                        break;
-                      case QuickActionEnum.weelkly_report:
-                        BlocProvider.of<DashboardBloc>(
-                          context,
-                        ).add(TabUpdateEvent(selectedIndex: 1));
-                        break;
-                      case QuickActionEnum.view_team_tasks:
-                        BlocProvider.of<DashboardBloc>(
-                          context,
-                        ).add(TabUpdateEvent(selectedIndex: 1));
-                        break;
-                    }
-                  },
+                  onTap: (p0) => {},
+                  // onTap: (p0) {
+                  //   switch (p0) {
+                  //     case QuickActionEnum.log_entry:
+                  //       BlocProvider.of<DashboardBloc>(
+                  //         context,
+                  //       ).add(TabUpdateEvent(selectedIndex: 3));
+                  //       break;
+                  //     case QuickActionEnum.weelkly_report:
+                  //       BlocProvider.of<DashboardBloc>(
+                  //         context,
+                  //       ).add(TabUpdateEvent(selectedIndex: 1));
+                  //       break;
+                  //     case QuickActionEnum.view_team_tasks:
+                  //       BlocProvider.of<DashboardBloc>(
+                  //         context,
+                  //       ).add(TabUpdateEvent(selectedIndex: 1));
+                  //       break;
+                  //   }
+                  // },
                 ),
                 SizedBox(height: 20),
                 MyAssetsSection(),

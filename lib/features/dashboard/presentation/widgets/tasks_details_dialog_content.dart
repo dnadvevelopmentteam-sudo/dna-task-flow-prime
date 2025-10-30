@@ -1,3 +1,4 @@
+import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
 import 'package:flutter/material.dart';
 
 import 'edit_tasks_dialog.dart';
@@ -122,7 +123,15 @@ class _CustomStatusDropdownState extends State<_CustomStatusDropdown> {
 
 class _ManageButtonWithHover extends StatefulWidget {
   final VoidCallback onTap;
-  const _ManageButtonWithHover({super.key, required this.onTap});
+  final String text;
+  final Widget icon;
+
+  const _ManageButtonWithHover({
+    super.key,
+    required this.onTap,
+    required this.text,
+    required this.icon,
+  });
 
   @override
   State<_ManageButtonWithHover> createState() => _ManageButtonWithHoverState();
@@ -136,6 +145,15 @@ class _ManageButtonWithHoverState extends State<_ManageButtonWithHover> {
     final Color currentColor = _isHovering ? _primaryBlue : Colors.black;
     final Color borderColor = _isHovering ? _primaryBlue : Colors.grey[300]!;
     final Color bgColor = _isHovering ? _lightBlueHoverBg : Colors.white;
+
+    Widget iconWidget = widget.icon;
+    if (iconWidget is Icon) {
+      iconWidget = Icon(
+        iconWidget.icon,
+        size: iconWidget.size ?? 20,
+        color: currentColor,
+      );
+    }
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovering = true),
@@ -156,14 +174,15 @@ class _ManageButtonWithHoverState extends State<_ManageButtonWithHover> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.keyboard_arrow_down, size: 20, color: currentColor),
+              iconWidget,
               const SizedBox(width: 4),
               Text(
-                'Manage',
+                widget.text,
                 style: TextStyle(
+                  fontFamily: 'Inter',
                   color: currentColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 14,
+                  fontSize: context.scaleFont(14),
                 ),
               ),
             ],
@@ -1280,7 +1299,7 @@ class _TaskTabs extends StatelessWidget {
   }
 }
 
-// --- 2.9 Section: Ask Assignment/Quick Assign (New Section to Match Image Content) ---
+// --- 2.9 Section: Task Assignment/Quick Assign (New Section to Match Image Content) ---
 class _AskAssignmentSection extends StatelessWidget {
   const _AskAssignmentSection();
 
@@ -1406,6 +1425,8 @@ class _AskAssignmentSection extends StatelessWidget {
                       // ),
                       _ManageButtonWithHover(
                         onTap: () => _onManageTapped(context),
+                        text: 'Manage',
+                        icon: const Icon(Icons.person, size: 20),
                       ),
                     ],
                   ),
@@ -1569,7 +1590,11 @@ class _SubtasksSection extends StatelessWidget {
                   'Subtasks (0)',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
-                _ManageButtonWithHover(onTap: () => _onManageTapped(context)),
+                _ManageButtonWithHover(
+                  onTap: () => _onManageTapped(context),
+                  text: 'Add Subtask',
+                  icon: const Icon(Icons.add, size: 20),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -1769,6 +1794,7 @@ class _RecentActivitySection extends StatelessWidget {
 }
 
 // --- 2.14 Left Panel Content (Combines all Left-Side Widgets) (ADJUSTED) ---
+
 class _LeftPanelContent extends StatelessWidget {
   final VoidCallback onClose;
   const _LeftPanelContent({required this.onClose});
