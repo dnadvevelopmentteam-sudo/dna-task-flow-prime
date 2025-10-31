@@ -36,8 +36,8 @@ class _ActionButtonState extends State<ActionButton> {
     final Color primaryColor = AppColors.primaryDark;
     const Color defaultBorderColor = Color(0xFFEEEEEE);
     final Color hoverBgColor = Colors.grey;
-    final Color defaultIconColor = Colors.grey.shade700;
-    const Color defaultTextColor = Colors.black;
+    final Color defaultIconColor = Color(0xFF808080);
+    const Color defaultTextColor = Color(0xFF808080);
 
     Color backgroundColor;
     Color iconColor;

@@ -20,7 +20,8 @@ class DashboardSection extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Color(0xFFEEEEEE), width: 1),
+        // side: const BorderSide(color: Color(0xFFEEEEEE), width: 1),
+        side: BorderSide(color: Color(0xFFE6E6E6), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -55,7 +55,7 @@ class ActiveTasksDialog extends StatelessWidget {
               fontFamily: 'Inter',
               fontSize: context.scaleFont(16),
               fontWeight: FontWeight.w600,
-              color: const Color(0xFF0A0A0A),
+              color: const Color(0xFF000000),
             ),
           ),
           IconButton(
@@ -69,13 +69,13 @@ class ActiveTasksDialog extends StatelessWidget {
 
   Widget _buildOverviewSection(BuildContext context) {
     final stats = [
-      {'value': '4', 'label': 'Total Active', 'color': const Color(0xFF1D4ED8)},
-      {'value': '1', 'label': 'In Progress', 'color': const Color(0xFFFBBF24)},
-      {'value': '0', 'label': 'Due Today', 'color': const Color(0xFFEF4444)},
+      {'value': '4', 'label': 'Total Active', 'color': AppColors.primary},
+      {'value': '1', 'label': 'In Progress', 'color': const Color(0xFFD08700)},
+      {'value': '0', 'label': 'Due Today', 'color': const Color(0xFFCA3500)},
       {
         'value': '5.3h',
         'label': 'Hours Logged',
-        'color': const Color(0xFF059669),
+        'color': const Color(0xFF00A63E),
       },
     ];
 
@@ -167,8 +167,9 @@ class ActiveTasksDialog extends StatelessWidget {
           'Your Active Tasks',
           style: TextStyle(
             fontFamily: 'Inter',
+            fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF101828),
+            color: Color(0xFF000000),
           ),
         ),
         const SizedBox(height: 12),
@@ -264,7 +265,7 @@ class _TaskOverviewCard extends StatelessWidget {
             value,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: context.scaleFont(20),
+              fontSize: context.scaleFont(24),
               fontWeight: FontWeight.w600,
               color: color,
             ),
@@ -276,7 +277,7 @@ class _TaskOverviewCard extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: context.scaleFont(12),
-              color: const Color(0xFF4A5565),
+              color: const Color(0xFF000000),
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -345,7 +346,7 @@ class _TaskListItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(9),
-        border: Border.all(color: textColor.withOpacity(0.2), width: 1),
+        // border: Border.all(color: textColor.withOpacity(0.2), width: 1),
       ),
       child: Text(
         text,
@@ -364,7 +365,7 @@ class _TaskListItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.red),
+        // border: Border.all(color: Colors.red),
         color: const Color(0xFFFEE2E2),
         borderRadius: BorderRadius.circular(9),
       ),

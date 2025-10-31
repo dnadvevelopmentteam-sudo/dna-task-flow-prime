@@ -73,7 +73,7 @@ class QuickActionsSection extends StatelessWidget {
               // ),
               ActionButton(
                 title: 'Log Time Entry',
-                icon: Icons.headphones_outlined,
+                icon: Icons.access_time,
                 // isPrimary: true,
                 onTap: () => _logTimeEntry(context),
               ),
@@ -81,7 +81,7 @@ class QuickActionsSection extends StatelessWidget {
               const SizedBox(height: 8),
               ActionButton(
                 title: 'View Team Tasks',
-                icon: Icons.group_outlined,
+                icon: Icons.people_outline,
                 onTap: () {
                   onTap(QuickActionEnum.view_team_tasks);
                 },

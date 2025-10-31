@@ -1,4 +1,5 @@
 import 'package:dna_taskflow_prime/core/extension/responsive_extension.dart';
+import 'package:dna_taskflow_prime/core/theme/colors.dart';
 import 'package:dna_taskflow_prime/features/dashboard/presentation/widgets/dashboard_section.dart';
 import 'package:dna_taskflow_prime/features/leaderboards/presentation/pages/leader_board_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class RankBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: isYou ? Colors.blue.shade50 : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color, width: 1.5),
+        // border: Border.all(color: color, width: 1.5),
       ),
       child: Center(
         child: Text(
@@ -64,15 +65,15 @@ class LeaderboardSection extends StatelessWidget {
       ..sort((a, b) => (b['points'] as int).compareTo(a['points'] as int));
 
     Color getRankColor(int rank, bool isYou) {
-      if (isYou) return Colors.blue.shade700;
+      if (isYou) return AppColors.primary;
       switch (rank) {
         case 1:
           return Colors.green;
         case 2:
         case 3:
-          return Colors.grey.shade400;
+          return Color(0xFF808080);
         default:
-          return Colors.blue.shade700;
+          return AppColors.primary;
       }
     }
 
@@ -102,7 +103,7 @@ class LeaderboardSection extends StatelessWidget {
               final name = r['name'] as String;
               final color = getRankColor(rank, r['isYou'] as bool);
               final pointsColor = rank == 1
-                  ? Colors.green
+                  ? Color(0xFF00A63E)
                   : const Color(0xFF101828);
 
               return ListTile(
@@ -158,7 +159,7 @@ class LeaderboardSection extends StatelessWidget {
               },
               leading: RankBadge(
                 rank: youRank,
-                color: Colors.blue.shade700,
+                color: AppColors.primary,
                 isYou: true,
               ),
               title: Text(
@@ -166,17 +167,17 @@ class LeaderboardSection extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: context.scaleFont(16),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue.shade700,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primary,
                 ),
               ),
               trailing: Text(
                 '${youData['points']} pts',
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  color: Colors.blue.shade700,
+                  color: AppColors.primary,
                   fontSize: context.scaleFont(16),
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               contentPadding: const EdgeInsets.symmetric(

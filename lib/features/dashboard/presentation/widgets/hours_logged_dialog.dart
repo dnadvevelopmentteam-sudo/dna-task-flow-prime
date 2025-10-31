@@ -207,7 +207,11 @@ class HoursLoggedDialog extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: overviewData
-            .map((data) => Expanded(child: _OverviewCard(data: data)))
+            .map(
+              (data) => Expanded(
+                child: _OverviewCard(data: data, color: data.color),
+              ),
+            )
             .toList(),
       ),
     );
@@ -316,7 +320,8 @@ class HoursLoggedDialog extends StatelessWidget {
 
 class _OverviewCard extends StatelessWidget {
   final OverviewData data;
-  const _OverviewCard({required this.data});
+  final Color color;
+  const _OverviewCard({required this.data, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -337,7 +342,7 @@ class _OverviewCard extends StatelessWidget {
               fontFamily: 'Inter',
               fontSize: context.scaleFont(24),
               fontWeight: FontWeight.w600,
-              color: Color(0xFF0851B8),
+              color: color,
             ),
           ),
           const SizedBox(height: 5),
